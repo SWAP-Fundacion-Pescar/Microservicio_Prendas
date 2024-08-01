@@ -10,10 +10,10 @@ class ClothesCommand implements IClothesCommand
     deleteClothe(clotheId: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    addImageToClothe(): Promise<IClotheDocument> {
+    addMediaToClothe(): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
-    removeImageFromClothe(): Promise<IClotheDocument> {
+    removeMediaFromClothe(): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
     addReview(): Promise<IClotheDocument> {

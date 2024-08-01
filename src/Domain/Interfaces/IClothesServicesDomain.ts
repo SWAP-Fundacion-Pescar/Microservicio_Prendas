@@ -9,8 +9,8 @@ interface IClothesServicesDomain
 
     addClothe(clothe: Clothe): Promise<IClotheDocument>;        
     deleteClothe(clotheId: string): Promise<void>;
-    addImageToClothe(): Promise<IClotheDocument>; // Falta definir DTO
-    removeImageFromClothe(): Promise<IClotheDocument>; // Falta definir DTO
+    addMediaToClothe(): Promise<IClotheDocument>; // Falta definir DTO
+    removeMediaFromClothe(): Promise<IClotheDocument>; // Falta definir DTO
     addReview(): Promise<IClotheDocument>; // Falta definir DTO
     updateClotheDetails(): Promise<IClotheDocument>; // Falta definir DTO
 }

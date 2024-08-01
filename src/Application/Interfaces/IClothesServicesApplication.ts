@@ -9,8 +9,8 @@ interface IClothesServicesApplication
 
     addClothe(clothe: Clothe): Promise<void>;        
     deleteClothe(clotheId: string): Promise<void>;
-    addImageToClothe(): Promise<void>; // Falta definir DTO
-    removeImageFromClothe(): Promise<void>; // Falta definir DTO
+    addMediaToClothe(): Promise<void>; // Falta definir DTO
+    removeMediaFromClothe(): Promise<void>; // Falta definir DTO
     addReview(): Promise<void>; // Falta definir DTO
     updateClotheDetails(): Promise<void>; // Falta definir DTO
 }

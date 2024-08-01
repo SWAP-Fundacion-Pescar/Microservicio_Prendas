@@ -24,10 +24,10 @@ class ClothesServicesApplication implements IClothesServicesApplication
     deleteClothe(clotheId: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    addImageToClothe(): Promise<void> {
+    addMediaToClothe(): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    removeImageFromClothe(): Promise<void> {
+    removeMediaFromClothe(): Promise<void> {
         throw new Error("Method not implemented.");
     }
     addReview(): Promise<void> {
