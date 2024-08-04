@@ -3,10 +3,10 @@ import IClothesServicesApplication from "../Interfaces/IClothesServicesApplicati
 import Clothe from "../../Domain/Entities/Clothe";
 import IGetClothesDTO from "../Interfaces/IGetClothesDTO";
 import GetClothesDTO from "../DTO/GetClothesDTO";
-import ICreateClotheDTO from "../Interfaces/ICreateClotheDTO";
-import CreateClotheDTO from "../DTO/CreateClotheDTO";
-import IAddMediaToClotheDTO from "../Interfaces/IAddMediaToClotheDTO";
-import AddMediaToClotheDTO from "../DTO/AddMediaToClotheDTO";
+import IReceivedDataForClotheDTO from "../Interfaces/IReceivedDataForClotheDTO";
+import ReceivedDataForClotheDTO from "../DTO/ReceivedDataForClotheDTO";
+import IReceivedDataToAddMediaToClothe from "../Interfaces/IReceivedDataToAddMediaToClothe";
+import ReceivedDataToAddMediaToClotheDTO from "../DTO/ReceivedDataToAddMediaToClotheDTO";
 import IRemoveMediaFromClotheDTO from "../Interfaces/IRemoveMediaFromClotheDTO";
 import RemoveMediaFromClotheDTO from "../DTO/RemoveMediaFromClotheDTO";
 import IReview from "../../Domain/Interfaces/IReview";
@@ -68,8 +68,8 @@ class ClothesController
     public async addClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription, media }: ICreateClotheDTO = req.body;
-            const createClotheDTO: ICreateClotheDTO = new CreateClotheDTO(userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, 
+            const { userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription, media }: IReceivedDataForClotheDTO = req.body;
+            const createClotheDTO: IReceivedDataForClotheDTO = new ReceivedDataForClotheDTO(userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, 
                                                         expectedDescription, media);
             const createdClothe: Clothe = await this.clothesServicesApplication.addClothe(createClotheDTO);
             res.status(201).send(createdClothe.id);
@@ -94,8 +94,8 @@ class ClothesController
     public async addMediaToClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { clotheId, media }: IAddMediaToClotheDTO = req.body;
-            const addMediaToClotheDTO: IAddMediaToClotheDTO = new AddMediaToClotheDTO(clotheId, media);
+            const { clotheId, media }: IReceivedDataToAddMediaToClothe = req.body;
+            const addMediaToClotheDTO: IReceivedDataToAddMediaToClothe = new ReceivedDataToAddMediaToClotheDTO(clotheId, media);
             const updatedClothe: Clothe = await this.clothesServicesApplication.addMediaToClothe(addMediaToClotheDTO);
             res.status(200).send(updatedClothe.id);
         }

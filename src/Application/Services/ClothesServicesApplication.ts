@@ -1,11 +1,11 @@
 import Clothe from "../../Domain/Entities/Clothe";
 import IClothesServicesDomain from "../../Domain/Interfaces/IClothesServicesDomain";
-import IReview from "../../Domain/Interfaces/IReview";
-import IAddMediaToClotheDTO from "../Interfaces/IAddMediaToClotheDTO";
+import IReceivedDataToAddMediaToClothe from "../Interfaces/IReceivedDataToAddMediaToClothe";
 import IClothesServicesApplication from "../Interfaces/IClothesServicesApplication";
-import ICreateClotheDTO from "../Interfaces/ICreateClotheDTO";
+import IReceivedDataForClotheDTO from "../Interfaces/IReceivedDataForClotheDTO";
 import IGetClothesDTO from "../Interfaces/IGetClothesDTO";
 import IRemoveMediaFromClotheDTO from "../Interfaces/IRemoveMediaFromClotheDTO";
+import IReceivedDataToAddReview from "../Interfaces/IReceivedDataToAddReview";
 
 class ClothesServicesApplication implements IClothesServicesApplication
 {
@@ -26,23 +26,23 @@ class ClothesServicesApplication implements IClothesServicesApplication
         const retrievedClothes: Array<Clothe> = await this.clothesServicesDomain.getClothes(getClothesDTO);
         return retrievedClothes;
     }
-    async addClothe(createClotheDTO: ICreateClotheDTO): Promise<Clothe> {
-        const createdClothe: Clothe = await this.clothesServicesDomain.addClothe(createClotheDTO);
+    async addClothe(ReceivedDataForClotheDTO: IReceivedDataForClotheDTO): Promise<Clothe> {
+        const createdClothe: Clothe = await this.clothesServicesDomain.addClothe(ReceivedDataForClotheDTO);
         return createdClothe;
     }
     async deleteClothe(clotheId: string): Promise<void> {
         await this.clothesServicesDomain.deleteClothe(clotheId);
     }
-    async addMediaToClothe(addMediaToClotheDTO: IAddMediaToClotheDTO): Promise<Clothe> {
-        const updatedClothe: Clothe = await this.clothesServicesDomain.addMediaToClothe(addMediaToClotheDTO);
+    async addMediaToClothe(receivedDataToAddMediaToClothe: IReceivedDataToAddMediaToClothe): Promise<Clothe> {
+        const updatedClothe: Clothe = await this.clothesServicesDomain.addMediaToClothe(receivedDataToAddMediaToClothe);
         return updatedClothe;
     }
     async removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<Clothe> {
         const updatedClothe: Clothe = await this.clothesServicesDomain.removeMediaFromClothe(removeMediaFromClotheDTO);
         return updatedClothe;
     }
-    async addReview(review: IReview): Promise<Clothe> {
-        const updatedClothe: Clothe = await this.clothesServicesDomain.addReview(review);
+    async addReview(receivedDataToAddReview: IReceivedDataToAddReview): Promise<Clothe> {
+        const updatedClothe: Clothe = await this.clothesServicesDomain.addReview(receivedDataToAddReview);
         return updatedClothe;
     }
     async updateClotheDetails(): Promise<Clothe> {

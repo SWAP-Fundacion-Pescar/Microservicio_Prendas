@@ -1,5 +1,5 @@
-import IAddMediaToClotheDTO from "../../Application/Interfaces/IAddMediaToClotheDTO";
-import ICreateClotheDTO from "../../Application/Interfaces/ICreateClotheDTO";
+import IReceivedDataToAddMediaToClothe from "../../Application/Interfaces/IReceivedDataToAddMediaToClothe";
+import IReceivedDataForClotheDTO from "../../Application/Interfaces/IReceivedDataForClotheDTO";
 import IGetClothesDTO from "../../Application/Interfaces/IGetClothesDTO";
 import IRemoveMediaFromClotheDTO from "../../Application/Interfaces/IRemoveMediaFromClotheDTO";
 import IClotheDocument from "../../Infrastructure/Interfaces/IClotheDocument";
@@ -7,6 +7,7 @@ import IClothesCommand from "../../Infrastructure/Interfaces/IClothesCommand";
 import IClothesQuery from "../../Infrastructure/Interfaces/IClothesQuery";
 import IClothesServicesDomain from "../Interfaces/IClothesServicesDomain";
 import IReview from "../Interfaces/IReview";
+import IReceivedDataToAddReview from "../../Application/Interfaces/IReceivedDataToAddReview";
 
 class ClothesServicesDomain implements IClothesServicesDomain
 {
@@ -26,19 +27,19 @@ class ClothesServicesDomain implements IClothesServicesDomain
     getClothes(getClothesDTO: IGetClothesDTO): Promise<Array<IClotheDocument>> {
         throw new Error("Method not implemented.");
     }
-    addClothe(createClotheDTO: ICreateClotheDTO): Promise<IClotheDocument> {
+    addClothe(createClotheDTO: IReceivedDataForClotheDTO): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
     deleteClothe(clotheId: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    addMediaToClothe(addMediaToClotheDTO: IAddMediaToClotheDTO): Promise<IClotheDocument> {
+    addMediaToClothe(receivedDataToAddMediaToClothe: IReceivedDataToAddMediaToClothe): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
     removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
-    addReview(review: IReview): Promise<IClotheDocument> {
+    addReview(receivedDataToAddReview: IReceivedDataToAddReview): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
     updateClotheDetails(): Promise<IClotheDocument> {

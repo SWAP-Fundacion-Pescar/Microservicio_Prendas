@@ -1,6 +1,6 @@
-import ICreateClotheDTO from "../Interfaces/ICreateClotheDTO";
+import IReceivedDataForClotheDTO from "../Interfaces/IReceivedDataForClotheDTO";
 
-class CreateClotheDTO implements ICreateClotheDTO
+class ReceivedDataForClotheDTO implements IReceivedDataForClotheDTO
 {
     userId: string;
     name: string;
@@ -29,4 +29,4 @@ class CreateClotheDTO implements ICreateClotheDTO
                     this.media = media;
                 }
 }
-export default CreateClotheDTO;
+export default ReceivedDataForClotheDTO;

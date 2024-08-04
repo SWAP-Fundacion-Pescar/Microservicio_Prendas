@@ -1,4 +1,4 @@
-interface ICreateClotheDTO
+interface IReceivedDataForClotheDTO
 {
     userId: string;
     name: string;
@@ -12,4 +12,4 @@ interface ICreateClotheDTO
     expectedDescription: string;
     media: File;
 }
-export default ICreateClotheDTO;
+export default IReceivedDataForClotheDTO;

@@ -1,7 +1,8 @@
+import { Document } from "mongoose";
 import Media from "../../Domain/Entities/Media";
 import Review from "../../Domain/Entities/Review";
 
-interface IClotheDocument
+interface IClotheDocument extends Document
 {
     userId: string;
     name: string;
