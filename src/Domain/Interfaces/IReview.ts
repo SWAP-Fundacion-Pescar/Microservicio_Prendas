@@ -1,8 +1,8 @@
 interface IReview 
 {
-    senderUserId: String;
-    receiverUserId: String;
-    puntuation: Number;
-    comment: String;
+    senderUserId: string;
+    receiverUserId: string;
+    puntuation: number;
+    comment: string;
 }
 export default IReview;

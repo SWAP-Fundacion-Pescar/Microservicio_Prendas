@@ -2,10 +2,10 @@ import IReview from "../Interfaces/IReview";
 
 class Review implements IReview
 {
-    senderUserId: String;
-    receiverUserId: String;
-    puntuation: Number;
-    comment: String;
+    senderUserId: string;
+    receiverUserId: string;
+    puntuation: number;
+    comment: string;
     constructor(senderUserId: string, receiverUserId: string, puntuation: number, comment: string)
     {
         this.senderUserId = senderUserId;

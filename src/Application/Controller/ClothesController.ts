@@ -1,5 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import IClothesServicesApplication from "../Interfaces/IClothesServicesApplication";
+import Clothe from "../../Domain/Entities/Clothe";
+import IGetClothesDTO from "../Interfaces/IGetClothesDTO";
+import GetClothesDTO from "../DTO/GetClothesDTO";
+import ICreateClotheDTO from "../Interfaces/ICreateClotheDTO";
+import CreateClotheDTO from "../DTO/CreateClotheDTO";
+import IAddMediaToClotheDTO from "../Interfaces/IAddMediaToClotheDTO";
+import AddMediaToClotheDTO from "../DTO/AddMediaToClotheDTO";
+import IRemoveMediaFromClotheDTO from "../Interfaces/IRemoveMediaFromClotheDTO";
+import RemoveMediaFromClotheDTO from "../DTO/RemoveMediaFromClotheDTO";
+import IReview from "../../Domain/Interfaces/IReview";
+import Review from "../../Domain/Entities/Review";
 
 class ClothesController
 {
@@ -20,7 +31,9 @@ class ClothesController
     public async getClotheById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {            
-            res.status(200);
+            const clotheId: string = req.query.clotheId as string;        
+            const retrievedClothe: Clothe = await this.clothesServicesApplication.getClotheById(clotheId);
+            res.status(200).send(retrievedClothe);
         }
         catch(error)
         {
@@ -30,7 +43,9 @@ class ClothesController
     public async getClothesByUserId(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            res.status(200);
+            const userId: string = req.query.userId as string;
+            const retrievedClothes: Array<Clothe> = await this.clothesServicesApplication.getClothesByUserId(userId);
+            res.status(200).send(retrievedClothes);
         }
         catch(error)
         {
@@ -40,7 +55,10 @@ class ClothesController
     public async getClothes(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            res.status(200);
+            const { offset, limit, category, size, gender }: IGetClothesDTO = req.body;
+            const getClothesDTO: IGetClothesDTO = new GetClothesDTO(offset, limit, category, size, gender);
+            const retrievedClothes: Array<Clothe> = await this.clothesServicesApplication.getClothes(getClothesDTO);            
+            res.status(200).send(retrievedClothes);
         }
         catch(error)
         {
@@ -50,7 +68,11 @@ class ClothesController
     public async addClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            res.status(200);
+            const { userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription, media }: ICreateClotheDTO = req.body;
+            const createClotheDTO: ICreateClotheDTO = new CreateClotheDTO(userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, 
+                                                        expectedDescription, media);
+            const createdClothe: Clothe = await this.clothesServicesApplication.addClothe(createClotheDTO);
+            res.status(201).send(createdClothe.id);
         }
         catch(error)
         {
@@ -60,6 +82,8 @@ class ClothesController
     public async deleteClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
+            const id: string = req.query.id as string;
+            await this.clothesServicesApplication.deleteClothe(id);
             res.status(200);
         }
         catch(error)
@@ -70,7 +94,10 @@ class ClothesController
     public async addMediaToClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            res.status(200);
+            const { clotheId, media }: IAddMediaToClotheDTO = req.body;
+            const addMediaToClotheDTO: IAddMediaToClotheDTO = new AddMediaToClotheDTO(clotheId, media);
+            const updatedClothe: Clothe = await this.clothesServicesApplication.addMediaToClothe(addMediaToClotheDTO);
+            res.status(200).send(updatedClothe.id);
         }
         catch(error)
         {
@@ -80,7 +107,10 @@ class ClothesController
     public async removeMediaFromClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            res.status(200);
+            const { clotheId, mediaIndex }: IRemoveMediaFromClotheDTO = req.body;
+            const removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO = new RemoveMediaFromClotheDTO(clotheId, mediaIndex);
+            const updatedClothe = await this.clothesServicesApplication.removeMediaFromClothe(removeMediaFromClotheDTO);
+            res.status(200).send(updatedClothe.id);
         }
         catch(error)
         {
@@ -90,7 +120,10 @@ class ClothesController
     public async addReview(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            res.status(200);
+            const { senderUserId, receiverUserId, puntuation, comment }: IReview = req.body;
+            const review = new Review(senderUserId, receiverUserId, puntuation, comment);
+            const updatedClothe = await this.clothesServicesApplication.addReview(review);
+            res.status(200).send(updatedClothe.id);
         }
         catch(error)
         {

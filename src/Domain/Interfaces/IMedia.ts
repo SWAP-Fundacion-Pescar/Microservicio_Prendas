@@ -1,6 +1,6 @@
 interface IMedia
 {
-    url: String;
-    type: String;
+    url: string;
+    type: string;
 }
 export default IMedia;

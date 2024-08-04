@@ -2,8 +2,8 @@ import IMedia from "../Interfaces/IMedia";
 
 class Media implements IMedia
 {
-    url: String;
-    type: String;
+    url: string;
+    type: string;
     constructor(url: string, type: string)
     {
         this.url = url;

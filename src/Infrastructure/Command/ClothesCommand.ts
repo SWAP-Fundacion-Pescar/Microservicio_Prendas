@@ -1,27 +1,30 @@
-import Clothe from "../../Domain/Entities/Clothe";
+import IAddMediaToClotheDTO from "../../Application/Interfaces/IAddMediaToClotheDTO";
+import ICreateClotheDTO from "../../Application/Interfaces/ICreateClotheDTO";
+import IRemoveMediaFromClotheDTO from "../../Application/Interfaces/IRemoveMediaFromClotheDTO";
+import IReview from "../../Domain/Interfaces/IReview";
 import IClotheDocument from "../Interfaces/IClotheDocument";
 import IClothesCommand from "../Interfaces/IClothesCommand";
 
 class ClothesCommand implements IClothesCommand
 {
-    addClothe(clothe: Clothe): Promise<IClotheDocument> {
+    addClothe(createClotheDTO: ICreateClotheDTO): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
     deleteClothe(clotheId: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    addMediaToClothe(): Promise<IClotheDocument> {
+    addMediaToClothe(addMediaToClotheDTO: IAddMediaToClotheDTO): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
-    removeMediaFromClothe(): Promise<IClotheDocument> {
+    removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
-    addReview(): Promise<IClotheDocument> {
+    addReview(review: IReview): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
     updateClotheDetails(): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
-    }
+    }   
     
 }
 export default ClothesCommand;

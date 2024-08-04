@@ -1,6 +1,11 @@
 import Clothe from "../../Domain/Entities/Clothe";
 import IClothesServicesDomain from "../../Domain/Interfaces/IClothesServicesDomain";
+import IReview from "../../Domain/Interfaces/IReview";
+import IAddMediaToClotheDTO from "../Interfaces/IAddMediaToClotheDTO";
 import IClothesServicesApplication from "../Interfaces/IClothesServicesApplication";
+import ICreateClotheDTO from "../Interfaces/ICreateClotheDTO";
+import IGetClothesDTO from "../Interfaces/IGetClothesDTO";
+import IRemoveMediaFromClotheDTO from "../Interfaces/IRemoveMediaFromClotheDTO";
 
 class ClothesServicesApplication implements IClothesServicesApplication
 {
@@ -9,31 +14,38 @@ class ClothesServicesApplication implements IClothesServicesApplication
     {
         this.clothesServicesDomain = clothesServicesDomain;
     }
-    getClotheById(clotheId: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async getClotheById(clotheId: string): Promise<Clothe> {
+        const retrievedClothe: Clothe = await this.clothesServicesDomain.getClotheById(clotheId);
+        return retrievedClothe;
     }
-    getClothesByUserId(userId: string): Promise<Array<void>> {
-        throw new Error("Method not implemented.");
+    async getClothesByUserId(userId: string): Promise<Array<Clothe>> {
+        const retrievedClothes: Array<Clothe> = await this.clothesServicesDomain.getClothesByUserId(userId);
+        return retrievedClothes;
     }
-    getClothes(): Promise<Array<void>> {
-        throw new Error("Method not implemented.");
+    async getClothes(getClothesDTO: IGetClothesDTO): Promise<Array<Clothe>> {
+        const retrievedClothes: Array<Clothe> = await this.clothesServicesDomain.getClothes(getClothesDTO);
+        return retrievedClothes;
     }
-    addClothe(clothe: Clothe): Promise<void> {
-        throw new Error("Method not implemented.");
+    async addClothe(createClotheDTO: ICreateClotheDTO): Promise<Clothe> {
+        const createdClothe: Clothe = await this.clothesServicesDomain.addClothe(createClotheDTO);
+        return createdClothe;
     }
-    deleteClothe(clotheId: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async deleteClothe(clotheId: string): Promise<void> {
+        await this.clothesServicesDomain.deleteClothe(clotheId);
     }
-    addMediaToClothe(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async addMediaToClothe(addMediaToClotheDTO: IAddMediaToClotheDTO): Promise<Clothe> {
+        const updatedClothe: Clothe = await this.clothesServicesDomain.addMediaToClothe(addMediaToClotheDTO);
+        return updatedClothe;
     }
-    removeMediaFromClothe(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<Clothe> {
+        const updatedClothe: Clothe = await this.clothesServicesDomain.removeMediaFromClothe(removeMediaFromClotheDTO);
+        return updatedClothe;
     }
-    addReview(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async addReview(review: IReview): Promise<Clothe> {
+        const updatedClothe: Clothe = await this.clothesServicesDomain.addReview(review);
+        return updatedClothe;
     }
-    updateClotheDetails(): Promise<void> {
+    async updateClotheDetails(): Promise<Clothe> {
         throw new Error("Method not implemented.");
     }
 }

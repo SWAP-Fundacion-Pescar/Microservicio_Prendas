@@ -1,7 +1,4 @@
-import Media from "../../Domain/Entities/Media";
-import Review from "../../Domain/Entities/Review";
-
-interface IClotheDocument
+interface ICreateClotheDTO
 {
     userId: string;
     name: string;
@@ -13,9 +10,6 @@ interface IClotheDocument
     expectedGender: string;
     description: string;
     expectedDescription: string;
-    isAvailable: boolean;
-    media: Array<Media>;
-    review?: Review;
+    media: File;
 }
-
-export default IClotheDocument;
+export default ICreateClotheDTO;

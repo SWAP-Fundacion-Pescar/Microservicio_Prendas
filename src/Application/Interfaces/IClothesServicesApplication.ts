@@ -1,17 +1,21 @@
 import Clothe from "../../Domain/Entities/Clothe";
+import IReview from "../../Domain/Interfaces/IReview";
+import IAddMediaToClotheDTO from "./IAddMediaToClotheDTO";
+import ICreateClotheDTO from "./ICreateClotheDTO";
+import IGetClothesDTO from "./IGetClothesDTO";
+import IRemoveMediaFromClotheDTO from "./IRemoveMediaFromClotheDTO";
 
 interface IClothesServicesApplication
-{
-    // Todos los Promise<void> deben de ser reemplazados por un DTO apropiado
-    getClotheById(clotheId: string): Promise<void>;
-    getClothesByUserId(userId: string): Promise<Array<void>>;
-    getClothes(): Promise<Array<void>> // Falta definir DTO, debe de incluir filtros y paginado  
+{    
+    getClotheById(clotheId: string): Promise<Clothe>;
+    getClothesByUserId(userId: string): Promise<Array<Clothe>>;
+    getClothes(getClothesDTO: IGetClothesDTO): Promise<Array<Clothe>>; 
 
-    addClothe(clothe: Clothe): Promise<void>;        
+    addClothe(createClotheDTO: ICreateClotheDTO): Promise<Clothe>;        
     deleteClothe(clotheId: string): Promise<void>;
-    addMediaToClothe(): Promise<void>; // Falta definir DTO
-    removeMediaFromClothe(): Promise<void>; // Falta definir DTO
-    addReview(): Promise<void>; // Falta definir DTO
-    updateClotheDetails(): Promise<void>; // Falta definir DTO
+    addMediaToClothe(addMediaToClotheDTO: IAddMediaToClotheDTO): Promise<Clothe>; 
+    removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<Clothe>;
+    addReview(review: IReview): Promise<Clothe>; 
+    updateClotheDetails(): Promise<Clothe>; 
 }
 export default IClothesServicesApplication;

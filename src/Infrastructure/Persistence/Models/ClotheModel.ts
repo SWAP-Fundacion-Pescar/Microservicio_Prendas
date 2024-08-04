@@ -11,8 +11,11 @@ const clotheSchema: Schema<IClotheDocument> = new mongoose.Schema
         category: {type: String, required: true},
         expectedCategory: {type: String, required: true},
         size: {type: String, required: true},
+        expectedSize: {type: String, required: true},
         gender: {type: String, required: true},
+        expectedGender: {type: String, required: true},
         description: {type: String, required: true},
+        expectedDescription: {type: String, required: true},
         isAvailable: {type: Boolean, default: true},
         media: {type: [Media], required: true},
         review: {type: Review}
