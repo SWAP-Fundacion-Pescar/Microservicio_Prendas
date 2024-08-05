@@ -1,17 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import IClothesServicesApplication from "../Interfaces/IClothesServicesApplication";
-import Clothe from "../../Domain/Entities/Clothe";
-import IGetClothesDTO from "../Interfaces/IGetClothesDTO";
-import GetClothesDTO from "../DTO/GetClothesDTO";
-import IReceivedDataForClotheDTO from "../Interfaces/IReceivedDataForClotheDTO";
-import ReceivedDataForClotheDTO from "../DTO/ReceivedDataForClotheDTO";
-import IReceivedDataToAddMediaToClothe from "../Interfaces/IReceivedDataToAddMediaToClothe";
-import ReceivedDataToAddMediaToClotheDTO from "../DTO/ReceivedDataToAddMediaToClotheDTO";
-import IRemoveMediaFromClotheDTO from "../Interfaces/IRemoveMediaFromClotheDTO";
-import RemoveMediaFromClotheDTO from "../DTO/RemoveMediaFromClotheDTO";
-import IReview from "../../Domain/Interfaces/IReview";
-import Review from "../../Domain/Entities/Review";
-
+import GetClothesRequest from "../Requests/GetClothesRequest";
+import AddClotheRequest from "../Requests/AddClotheRequest";
+import AddMediaRequest from "../Requests/AddMediaRequest";
+import RemoveMediaRequest from "../Requests/RemoveMediaRequest";
+import AddReviewRequest from "../Requests/AddReviewRequest";
+import ClotheResponse from "../Responses/ClotheResponse";
 class ClothesController
 {
     private readonly clothesServicesApplication: IClothesServicesApplication;
@@ -23,17 +17,17 @@ class ClothesController
         this.getClothes = this.getClothes.bind(this);
         this.addClothe = this.addClothe.bind(this);
         this.deleteClothe = this.deleteClothe.bind(this);
-        this.addMediaToClothe = this.addMediaToClothe.bind(this);
-        this.removeMediaFromClothe = this.removeMediaFromClothe.bind(this);
+        this.addMedia = this.addMedia.bind(this);
+        this.removeMedia = this.removeMedia.bind(this);
         this.addReview = this.addReview.bind(this);
         this.updateClotheDetails = this.updateClotheDetails.bind(this);
     }
     public async getClotheById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {            
-            const clotheId: string = req.query.clotheId as string;        
-            const retrievedClothe: Clothe = await this.clothesServicesApplication.getClotheById(clotheId);
-            res.status(200).send(retrievedClothe);
+            const clotheId: string = req.params.clotheId as string;        
+            const clotheResponse: ClotheResponse = await this.clothesServicesApplication.getClotheById(clotheId);
+            res.status(200).send(clotheResponse);
         }
         catch(error)
         {
@@ -44,8 +38,8 @@ class ClothesController
         try
         {
             const userId: string = req.query.userId as string;
-            const retrievedClothes: Array<Clothe> = await this.clothesServicesApplication.getClothesByUserId(userId);
-            res.status(200).send(retrievedClothes);
+            const clothesResponse: Array<ClotheResponse> = await this.clothesServicesApplication.getClothesByUserId(userId);
+            res.status(200).send(clothesResponse);
         }
         catch(error)
         {
@@ -55,10 +49,10 @@ class ClothesController
     public async getClothes(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { offset, limit, category, size, gender }: IGetClothesDTO = req.body;
-            const getClothesDTO: IGetClothesDTO = new GetClothesDTO(offset, limit, category, size, gender);
-            const retrievedClothes: Array<Clothe> = await this.clothesServicesApplication.getClothes(getClothesDTO);            
-            res.status(200).send(retrievedClothes);
+            const { offset, limit, category, size, gender }: GetClothesRequest = req.body;
+            const getClothesRequest: GetClothesRequest = new GetClothesRequest(offset, limit, category, size, gender);
+            const clothesResponse: Array<ClotheResponse> = await this.clothesServicesApplication.getClothes(getClothesRequest);            
+            res.status(200).send(clothesResponse);
         }
         catch(error)
         {
@@ -68,11 +62,11 @@ class ClothesController
     public async addClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription, media }: IReceivedDataForClotheDTO = req.body;
-            const createClotheDTO: IReceivedDataForClotheDTO = new ReceivedDataForClotheDTO(userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, 
+            const { userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription, media }: AddClotheRequest = req.body;
+            const addClotheRequest: AddClotheRequest = new AddClotheRequest(userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, 
                                                         expectedDescription, media);
-            const createdClothe: Clothe = await this.clothesServicesApplication.addClothe(createClotheDTO);
-            res.status(201).send(createdClothe.id);
+            const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addClothe(addClotheRequest);
+            res.status(201).send(clotheResponse.id);
         }
         catch(error)
         {
@@ -82,7 +76,7 @@ class ClothesController
     public async deleteClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const id: string = req.query.id as string;
+            const id: string = req.params.id as string;
             await this.clothesServicesApplication.deleteClothe(id);
             res.status(200);
         }
@@ -91,26 +85,26 @@ class ClothesController
             next(error);
         }
     }
-    public async addMediaToClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public async addMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { clotheId, media }: IReceivedDataToAddMediaToClothe = req.body;
-            const addMediaToClotheDTO: IReceivedDataToAddMediaToClothe = new ReceivedDataToAddMediaToClotheDTO(clotheId, media);
-            const updatedClothe: Clothe = await this.clothesServicesApplication.addMediaToClothe(addMediaToClotheDTO);
-            res.status(200).send(updatedClothe.id);
+            const { clotheId, media }: AddMediaRequest = req.body;
+            const addMediaRequest: AddMediaRequest = new AddMediaRequest(clotheId, media);
+            const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addMediaToClothe(addMediaRequest);
+            res.status(200).send(clotheResponse.id);
         }
         catch(error)
         {
             next(error);
         }
     }
-    public async removeMediaFromClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public async removeMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { clotheId, mediaIndex }: IRemoveMediaFromClotheDTO = req.body;
-            const removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO = new RemoveMediaFromClotheDTO(clotheId, mediaIndex);
-            const updatedClothe = await this.clothesServicesApplication.removeMediaFromClothe(removeMediaFromClotheDTO);
-            res.status(200).send(updatedClothe.id);
+            const { clotheId, mediaIndex }: RemoveMediaRequest = req.body;
+            const removeMediaRequest: RemoveMediaRequest = new RemoveMediaRequest(clotheId, mediaIndex);
+            const clotheResponse: ClotheResponse = await this.clothesServicesApplication.removeMediaFromClothe(removeMediaRequest);
+            res.status(200).send(clotheResponse.id);
         }
         catch(error)
         {
@@ -120,10 +114,10 @@ class ClothesController
     public async addReview(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { senderUserId, receiverUserId, puntuation, comment }: IReview = req.body;
-            const review = new Review(senderUserId, receiverUserId, puntuation, comment);
-            const updatedClothe = await this.clothesServicesApplication.addReview(review);
-            res.status(200).send(updatedClothe.id);
+            const { clotheId ,senderUserId, receiverUserId, puntuation, comment }: AddReviewRequest = req.body;
+            const addReviewRequest = new AddReviewRequest(clotheId ,senderUserId, receiverUserId, puntuation, comment);
+            const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addReview(addReviewRequest);
+            res.status(200).send(clotheResponse.id);
         }
         catch(error)
         {

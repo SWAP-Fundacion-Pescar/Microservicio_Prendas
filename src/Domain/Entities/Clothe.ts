@@ -28,7 +28,7 @@ class Clothe
         this.gender = gender;
         this.expectedGender = expectedGender;
         this.description = description;
-        this.expectedDescription = description;
+        this.expectedDescription = expectedDescription;
         this.isAvailable = true;
         this.media = media;
     }

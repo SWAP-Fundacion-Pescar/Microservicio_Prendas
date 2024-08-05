@@ -1,6 +1,4 @@
-import IReceivedDataForClotheDTO from "../Interfaces/IReceivedDataForClotheDTO";
-
-class ReceivedDataForClotheDTO implements IReceivedDataForClotheDTO
+class AddClotheRequest
 {
     userId: string;
     name: string;
@@ -29,4 +27,4 @@ class ReceivedDataForClotheDTO implements IReceivedDataForClotheDTO
                     this.media = media;
                 }
 }
-export default ReceivedDataForClotheDTO;
+export default AddClotheRequest;

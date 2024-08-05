@@ -1,21 +1,21 @@
-import IReceivedDataToAddMediaToClothe from "../../Application/Interfaces/IReceivedDataToAddMediaToClothe";
-import IReceivedDataForClotheDTO from "../../Application/Interfaces/IReceivedDataForClotheDTO";
-import IGetClothesDTO from "../../Application/Interfaces/IGetClothesDTO";
-import IRemoveMediaFromClotheDTO from "../../Application/Interfaces/IRemoveMediaFromClotheDTO";
+import AddClotheRequest from "../../Application/Requests/AddClotheRequest";
+import AddMediaRequest from "../../Application/Requests/AddMediaRequest";
+import AddReviewRequest from "../../Application/Requests/AddReviewRequest";
+import GetClothesRequest from "../../Application/Requests/GetClothesRequest";
+import RemoveMediaRequest from "../../Application/Requests/RemoveMediaRequest";
 import IClotheDocument from "../../Infrastructure/Interfaces/IClotheDocument";
-import IReceivedDataToAddReview from "../../Application/Interfaces/IReceivedDataToAddReview";
 
 interface IClothesServicesDomain
 {
     getClotheById(clotheId: string): Promise<IClotheDocument>;
     getClothesByUserId(userId: string): Promise<Array<IClotheDocument>>;
-    getClothes(getClothesDTO: IGetClothesDTO): Promise<Array<IClotheDocument>> 
+    getClothes(getClothesRequest: GetClothesRequest): Promise<Array<IClotheDocument>> 
 
-    addClothe(createClotheDTO: IReceivedDataForClotheDTO): Promise<IClotheDocument>;        
+    addClothe(addClotheRequest: AddClotheRequest): Promise<IClotheDocument>;        
     deleteClothe(clotheId: string): Promise<void>;
-    addMediaToClothe(receivedDataToAddMediaToClothe: IReceivedDataToAddMediaToClothe): Promise<IClotheDocument>; 
-    removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<IClotheDocument>; 
-    addReview(receivedDataToAddReview: IReceivedDataToAddReview): Promise<IClotheDocument>; 
+    addMedia(addMediaRequest: AddMediaRequest): Promise<IClotheDocument>; 
+    removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument>; 
+    addReview(addReviewRequest: AddReviewRequest): Promise<IClotheDocument>; 
     updateClotheDetails(): Promise<IClotheDocument>; 
 }
 export default IClothesServicesDomain;

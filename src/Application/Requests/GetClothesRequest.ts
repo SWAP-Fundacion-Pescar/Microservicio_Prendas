@@ -1,6 +1,4 @@
-import IGetClothesDTO from "../Interfaces/IGetClothesDTO";
-
-class GetClothesDTO implements IGetClothesDTO
+class GetClothesRequest
 {
     offset: number;
     limit: number;
@@ -16,4 +14,4 @@ class GetClothesDTO implements IGetClothesDTO
         this.gender = gender
     }
 }
-export default GetClothesDTO;
+export default GetClothesRequest;

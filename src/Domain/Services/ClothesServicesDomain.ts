@@ -1,13 +1,14 @@
-import IReceivedDataToAddMediaToClothe from "../../Application/Interfaces/IReceivedDataToAddMediaToClothe";
-import IReceivedDataForClotheDTO from "../../Application/Interfaces/IReceivedDataForClotheDTO";
-import IGetClothesDTO from "../../Application/Interfaces/IGetClothesDTO";
-import IRemoveMediaFromClotheDTO from "../../Application/Interfaces/IRemoveMediaFromClotheDTO";
+import AddClotheRequest from "../../Application/Requests/AddClotheRequest";
+import AddMediaRequest from "../../Application/Requests/AddMediaRequest";
+import AddReviewRequest from "../../Application/Requests/AddReviewRequest";
+import GetClothesRequest from "../../Application/Requests/GetClothesRequest";
+import RemoveMediaRequest from "../../Application/Requests/RemoveMediaRequest";
 import IClotheDocument from "../../Infrastructure/Interfaces/IClotheDocument";
 import IClothesCommand from "../../Infrastructure/Interfaces/IClothesCommand";
 import IClothesQuery from "../../Infrastructure/Interfaces/IClothesQuery";
+import AddReviewDTO from "../DTO/AddReviewDTO";
+import Review from "../Entities/Review";
 import IClothesServicesDomain from "../Interfaces/IClothesServicesDomain";
-import IReview from "../Interfaces/IReview";
-import IReceivedDataToAddReview from "../../Application/Interfaces/IReceivedDataToAddReview";
 
 class ClothesServicesDomain implements IClothesServicesDomain
 {
@@ -18,31 +19,38 @@ class ClothesServicesDomain implements IClothesServicesDomain
         this.clothesCommand = clothesCommand;
         this.clothesQuery = clothesQuery;
     }
-    getClotheById(clotheId: string): Promise<IClotheDocument> {
+    async getClotheById(clotheId: string): Promise<IClotheDocument> {
+        const retrievedClothe: IClotheDocument = await this.clothesQuery.getClotheById(clotheId);
+        return retrievedClothe;
+    }
+    async getClothesByUserId(userId: string): Promise<Array<IClotheDocument>> {
+        const retrievedClothes: Array<IClotheDocument> = await this.clothesQuery.getClothesByUserId(userId);
+        return retrievedClothes;
+    }
+    async getClothes(getClothesRequest: GetClothesRequest): Promise<Array<IClotheDocument>> {
+        const retrievedClothes: Array<IClotheDocument> = await this.clothesQuery.getClothes(getClothesRequest);
+        return retrievedClothes;
+    }
+    async addClothe(addClotheRequest: AddClotheRequest): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
-    getClothesByUserId(userId: string): Promise<Array<IClotheDocument>> {
+    async deleteClothe(clotheId: string): Promise<void> {
+        await this.clothesCommand.deleteClothe(clotheId);
+    }
+    async addMedia(addMediaRequest: AddMediaRequest): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
-    getClothes(getClothesDTO: IGetClothesDTO): Promise<Array<IClotheDocument>> {
-        throw new Error("Method not implemented.");
+    async removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument> {
+        const updatedClothe: IClotheDocument = await this.clothesCommand.removeMedia(removeMediaRequest);
+        return updatedClothe;
     }
-    addClothe(createClotheDTO: IReceivedDataForClotheDTO): Promise<IClotheDocument> {
-        throw new Error("Method not implemented.");
+    async addReview(addReviewRequest: AddReviewRequest): Promise<IClotheDocument> {
+        const review: Review = new Review(addReviewRequest.senderUserId, addReviewRequest.receiverUserId, addReviewRequest.puntuation, addReviewRequest.comment);
+        const addReviewDTO: AddReviewDTO = new AddReviewDTO(addReviewRequest.clotheId, review);
+        const updatedClothe: IClotheDocument = await this.clothesCommand.addReview(addReviewDTO);
+        return updatedClothe;
     }
-    deleteClothe(clotheId: string): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-    addMediaToClothe(receivedDataToAddMediaToClothe: IReceivedDataToAddMediaToClothe): Promise<IClotheDocument> {
-        throw new Error("Method not implemented.");
-    }
-    removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<IClotheDocument> {
-        throw new Error("Method not implemented.");
-    }
-    addReview(receivedDataToAddReview: IReceivedDataToAddReview): Promise<IClotheDocument> {
-        throw new Error("Method not implemented.");
-    }
-    updateClotheDetails(): Promise<IClotheDocument> {
+    async updateClotheDetails(): Promise<IClotheDocument> {
         throw new Error("Method not implemented.");
     }
 }

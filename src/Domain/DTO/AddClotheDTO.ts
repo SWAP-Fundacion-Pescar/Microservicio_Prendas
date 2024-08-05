@@ -1,6 +1,6 @@
 import Media from "../Entities/Media";
 
-class CreateClotheDTO
+class AddClotheDTO
 {
     userId: string;
     name: string;
@@ -29,4 +29,4 @@ class CreateClotheDTO
             this.media = media;
         }
 }
-export default CreateClotheDTO;
+export default AddClotheDTO;

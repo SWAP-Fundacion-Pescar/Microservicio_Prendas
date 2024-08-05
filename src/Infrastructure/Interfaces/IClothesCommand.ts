@@ -1,16 +1,16 @@
-import IReceivedDataToAddReview from "../../Application/Interfaces/IReceivedDataToAddReview";
-import IRemoveMediaFromClotheDTO from "../../Application/Interfaces/IRemoveMediaFromClotheDTO";
-import AddMediaToClotheDTO from "../../Domain/DTO/AddMediaToClotheDTO";
-import CreateClotheDTO from "../../Domain/DTO/CreateClotheDTO";
+import AddMediaDTO from "../../Domain/DTO/AddMediaDTO";
+import AddClotheDTO from "../../Domain/DTO/AddClotheDTO";
 import IClotheDocument from "./IClotheDocument";
+import RemoveMediaRequest from "../../Application/Requests/RemoveMediaRequest";
+import AddReviewDTO from "../../Domain/DTO/AddReviewDTO";
 
 interface IClothesCommand
 {
-    addClothe(createClotheDTO: CreateClotheDTO): Promise<IClotheDocument>;        
+    addClothe(addClotheDTO: AddClotheDTO): Promise<IClotheDocument>;        
     deleteClothe(clotheId: string): Promise<void>;
-    addMediaToClothe(addMediaToClotheDTO: AddMediaToClotheDTO): Promise<IClotheDocument>; 
-    removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<IClotheDocument>; 
-    addReview(receivedDataToAddReview: IReceivedDataToAddReview): Promise<IClotheDocument>; 
+    addMedia(addMediaDTO: AddMediaDTO): Promise<IClotheDocument>; 
+    removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument>; 
+    addReview(addReviewDTO: AddReviewDTO): Promise<IClotheDocument>; 
     updateClotheDetails(): Promise<IClotheDocument>; 
 }
 export default IClothesCommand;

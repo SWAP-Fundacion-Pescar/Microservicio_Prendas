@@ -1,15 +1,15 @@
 import NotFoundException from "../../Application/Exceptions/NotFoundException";
-import IReceivedDataToAddReview from "../../Application/Interfaces/IReceivedDataToAddReview";
-import IRemoveMediaFromClotheDTO from "../../Application/Interfaces/IRemoveMediaFromClotheDTO";
-import AddMediaToClotheDTO from "../../Domain/DTO/AddMediaToClotheDTO";
-import CreateClotheDTO from "../../Domain/DTO/CreateClotheDTO";
+import AddMediaDTO from "../../Domain/DTO/AddMediaDTO";
+import AddClotheDTO from "../../Domain/DTO/AddClotheDTO";
 import IClotheDocument from "../Interfaces/IClotheDocument";
 import IClothesCommand from "../Interfaces/IClothesCommand";
 import ClotheModel from "../Persistence/Models/ClotheModel";
+import RemoveMediaRequest from "../../Application/Requests/RemoveMediaRequest";
+import AddReviewDTO from "../../Domain/DTO/AddReviewDTO";
 
 class ClothesCommand implements IClothesCommand
 {
-    async addClothe(createClotheDTO: CreateClotheDTO): Promise<IClotheDocument> {
+    async addClothe(createClotheDTO: AddClotheDTO): Promise<IClotheDocument> {
         const createdClothe: IClotheDocument = new ClotheModel(createClotheDTO);
         await createdClothe.save();
         return createdClothe;
@@ -17,24 +17,24 @@ class ClothesCommand implements IClothesCommand
     async deleteClothe(clotheId: string): Promise<void> {
         await ClotheModel.findByIdAndDelete(clotheId);
     }
-    async addMediaToClothe(addMediaToClotheDTO: AddMediaToClotheDTO): Promise<IClotheDocument> {
-        const retrievedClothe: IClotheDocument | null = await ClotheModel.findById(addMediaToClotheDTO.clotheId);
+    async addMedia(addMediaDTO: AddMediaDTO): Promise<IClotheDocument> {
+        const retrievedClothe: IClotheDocument | null = await ClotheModel.findById(addMediaDTO.clotheId);
         if(!retrievedClothe) throw new NotFoundException('No se ha encontrado una prenda');        
-        retrievedClothe.media.push(addMediaToClotheDTO.media);
+        retrievedClothe.media.push(addMediaDTO.media);
         await retrievedClothe.save();
         return retrievedClothe;
     }
-    async removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<IClotheDocument> {
-        const retrievedClothe: IClotheDocument | null = await ClotheModel.findById(removeMediaFromClotheDTO.clotheId);
+    async removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument> {
+        const retrievedClothe: IClotheDocument | null = await ClotheModel.findById(removeMediaRequest.clotheId);
         if(!retrievedClothe) throw new NotFoundException('No se ha encontrado una prenda');
-        retrievedClothe.media.splice(removeMediaFromClotheDTO.mediaIndex, 1);
+        retrievedClothe.media.splice(removeMediaRequest.mediaIndex, 1);
         await retrievedClothe.save();
         return retrievedClothe;
     }
-    async addReview(receivedDataToAddReview: IReceivedDataToAddReview): Promise<IClotheDocument> {
-        const retrievedClothe: IClotheDocument | null = await ClotheModel.findById(receivedDataToAddReview.clotheId);
+    async addReview(addReviewDTO: AddReviewDTO): Promise<IClotheDocument> {
+        const retrievedClothe: IClotheDocument | null = await ClotheModel.findById(addReviewDTO.clotheId);
         if(!retrievedClothe) throw new NotFoundException('No se ha encontrado una prenda');
-        retrievedClothe.review = receivedDataToAddReview.review;
+        retrievedClothe.review = addReviewDTO.review;
         retrievedClothe.isAvailable = false;
         await retrievedClothe.save();
         return retrievedClothe;

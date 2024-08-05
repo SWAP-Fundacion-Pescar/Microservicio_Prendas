@@ -1,6 +1,6 @@
 import Media from "../Entities/Media";
 
-class AddMediaToClotheDTO
+class AddMediaDTO
 {
     clotheId: string;
     media: Media;
@@ -10,4 +10,4 @@ class AddMediaToClotheDTO
         this.media = media;
     }
 }
-export default AddMediaToClotheDTO;
+export default AddMediaDTO;

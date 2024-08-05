@@ -1,22 +1,22 @@
 import Clothe from "../../Domain/Entities/Clothe";
-import IReview from "../../Domain/Interfaces/IReview";
-import IReceivedDataToAddMediaToClothe from "./IReceivedDataToAddMediaToClothe";
-import IReceivedDataForClotheDTO from "./IReceivedDataForClotheDTO";
-import IGetClothesDTO from "./IGetClothesDTO";
-import IRemoveMediaFromClotheDTO from "./IRemoveMediaFromClotheDTO";
-import IReceivedDataToAddReview from "./IReceivedDataToAddReview";
+import AddClotheRequest from "../Requests/AddClotheRequest";
+import AddMediaRequest from "../Requests/AddMediaRequest";
+import AddReviewRequest from "../Requests/AddReviewRequest";
+import GetClothesRequest from "../Requests/GetClothesRequest";
+import RemoveMediaRequest from "../Requests/RemoveMediaRequest";
+import ClotheResponse from "../Responses/ClotheResponse";
 
 interface IClothesServicesApplication
 {    
-    getClotheById(clotheId: string): Promise<Clothe>;
-    getClothesByUserId(userId: string): Promise<Array<Clothe>>;
-    getClothes(getClothesDTO: IGetClothesDTO): Promise<Array<Clothe>>; 
+    getClotheById(clotheId: string): Promise<ClotheResponse>;
+    getClothesByUserId(userId: string): Promise<Array<ClotheResponse>>;
+    getClothes(getClothesRequesst: GetClothesRequest): Promise<Array<ClotheResponse>>; 
 
-    addClothe(recivedDataForClotheDTO: IReceivedDataForClotheDTO): Promise<Clothe>;        
+    addClothe(addClotheRequest: AddClotheRequest): Promise<ClotheResponse>;        
     deleteClothe(clotheId: string): Promise<void>;
-    addMediaToClothe(receivedDataToAddMediaToClothe: IReceivedDataToAddMediaToClothe): Promise<Clothe>; 
-    removeMediaFromClothe(removeMediaFromClotheDTO: IRemoveMediaFromClotheDTO): Promise<Clothe>;
-    addReview(receivedDataToAddReview: IReceivedDataToAddReview): Promise<Clothe>; 
+    addMediaToClothe(addMediaRequest: AddMediaRequest): Promise<ClotheResponse>; 
+    removeMediaFromClothe(removeMediaRequest: RemoveMediaRequest): Promise<ClotheResponse>;
+    addReview(addReviewRequest: AddReviewRequest): Promise<ClotheResponse>; 
     updateClotheDetails(): Promise<Clothe>; 
 }
 export default IClothesServicesApplication;
