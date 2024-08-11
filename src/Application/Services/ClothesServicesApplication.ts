@@ -1,11 +1,13 @@
 import Clothe from "../../Domain/Entities/Clothe";
 import IClothesServicesDomain from "../../Domain/Interfaces/IClothesServicesDomain";
+import IClotheDocument from "../../Infrastructure/Interfaces/IClotheDocument";
 import IClothesServicesApplication from "../Interfaces/IClothesServicesApplication";
 import AddClotheRequest from "../Requests/AddClotheRequest";
 import AddMediaRequest from "../Requests/AddMediaRequest";
 import AddReviewRequest from "../Requests/AddReviewRequest";
 import GetClothesRequest from "../Requests/GetClothesRequest";
 import RemoveMediaRequest from "../Requests/RemoveMediaRequest";
+import UpdateClotheRequest from "../Requests/UpdateClotheRequest";
 import ClotheResponse from "../Responses/ClotheResponse";
 
 class ClothesServicesApplication implements IClothesServicesApplication
@@ -21,8 +23,9 @@ class ClothesServicesApplication implements IClothesServicesApplication
         return clotheResponse;
     }
     async getClothesByUserId(userId: string): Promise<Array<ClotheResponse>> {
-        const retrievedClothes: Array<Clothe> = await this.clothesServicesDomain.getClothesByUserId(userId);
-        return retrievedClothes;
+        const retrievedClothes: Array<IClotheDocument> = await this.clothesServicesDomain.getClothesByUserId(userId);
+        const clotheResponses: Array<ClotheResponse> = retrievedClothes.map<ClotheResponse>(clothe => new ClotheResponse(clothe));
+        return clotheResponses;
     }
     async getClothes(getClothesRequest: GetClothesRequest): Promise<Array<ClotheResponse>> {
         const retrievedClothes: Array<Clothe> = await this.clothesServicesDomain.getClothes(getClothesRequest);
@@ -47,8 +50,10 @@ class ClothesServicesApplication implements IClothesServicesApplication
         const updatedClothe: Clothe = await this.clothesServicesDomain.addReview(addReviewRequest);
         return updatedClothe;
     }
-    async updateClotheDetails(): Promise<Clothe> {
-        throw new Error("Method not implemented.");
+    async updateClotheDetails(updateClotheRequest: UpdateClotheRequest): Promise<ClotheResponse> {
+        const updatedClothe: Clothe = await this.clothesServicesDomain.updateClotheDetails(updateClotheRequest);
+        const clotheResponse: ClotheResponse = new ClotheResponse(updatedClothe);
+        return clotheResponse;
     }
 }
 export default ClothesServicesApplication;

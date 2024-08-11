@@ -13,7 +13,7 @@ class ClothesQuery implements IClothesQuery
         return retrievedClothe;
     }
     async getClothesByUserId(userId: string): Promise<Array<IClotheDocument>> {
-        const retrievedClothes: Array<IClotheDocument> | null = await ClotheModel.findOne({ userId: userId });
+        const retrievedClothes: Array<IClotheDocument> | null = await ClotheModel.find({ userId: userId });
         if(!retrievedClothes) throw new NotFoundException('No se han encontrado prendas para ese usuario');
         return retrievedClothes;
     }
@@ -22,11 +22,11 @@ class ClothesQuery implements IClothesQuery
         const offset = getClothesRequest.offset != null ? getClothesRequest.offset : 0;
         const limit = getClothesRequest.limit != null ? getClothesRequest.limit : 10;
         let query: Query<IClotheDocument[], IClotheDocument> = ClotheModel.find();
-        if(!category) query = query.where('category').equals(category);
-        if(!size) query = query.where('size').equals(size);
-        if(!gender) query = query.where('gender').equals(gender);
+        if(category) query = query.where('category').equals(category); 
+        if(size) query = query.where('size').equals(size);
+        if(gender) query = query.where('gender').equals(gender);
         query = query.where('isAvailable').equals(true);
-        const retrievedClothes = await query.skip(offset).limit(limit).exec();
+        const retrievedClothes = await query.skip(offset).limit(limit).exec();       
         if(!retrievedClothes) throw new NotFoundException('No se han encontrado prendas');
         return retrievedClothes;
     }

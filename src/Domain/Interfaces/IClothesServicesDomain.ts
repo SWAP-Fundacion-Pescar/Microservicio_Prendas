@@ -3,6 +3,7 @@ import AddMediaRequest from "../../Application/Requests/AddMediaRequest";
 import AddReviewRequest from "../../Application/Requests/AddReviewRequest";
 import GetClothesRequest from "../../Application/Requests/GetClothesRequest";
 import RemoveMediaRequest from "../../Application/Requests/RemoveMediaRequest";
+import UpdateClotheRequest from "../../Application/Requests/UpdateClotheRequest";
 import IClotheDocument from "../../Infrastructure/Interfaces/IClotheDocument";
 
 interface IClothesServicesDomain
@@ -16,6 +17,6 @@ interface IClothesServicesDomain
     addMedia(addMediaRequest: AddMediaRequest): Promise<IClotheDocument>; 
     removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument>; 
     addReview(addReviewRequest: AddReviewRequest): Promise<IClotheDocument>; 
-    updateClotheDetails(): Promise<IClotheDocument>; 
+    updateClotheDetails(updateClotheRequest: UpdateClotheRequest): Promise<IClotheDocument>; 
 }
 export default IClothesServicesDomain;

@@ -3,6 +3,7 @@ import requestLogger from './Application/Middleware/RequestLogger';
 import errorHandler from './Application/Middleware/ErrorHandler';
 import MongoDB from './Infrastructure/Persistence/Config/MongoDB';
 import swaggerUi from 'swagger-ui-express';
+import clothesRouter from './Application/Routes/ClothesRoutes';
 MongoDB();
 const app = express();
 
@@ -15,5 +16,5 @@ app.use(errorHandler);
 //     res.setHeader('Content-Type', 'application/json');
 //     res.send(swaggerSpec);
 // });
-app.use('/', (req, res) => res.send('Funcionando'))
+app.use('/api', clothesRouter);
 export default app;

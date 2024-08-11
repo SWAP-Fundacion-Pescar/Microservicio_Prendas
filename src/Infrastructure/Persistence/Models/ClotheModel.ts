@@ -1,7 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 import IClotheDocument from "../../Interfaces/IClotheDocument";
-import Review from "../../../Domain/Entities/Review";
-import Media from "../../../Domain/Entities/Media";
 
 const clotheSchema: Schema<IClotheDocument> = new mongoose.Schema
 (    
@@ -17,8 +15,8 @@ const clotheSchema: Schema<IClotheDocument> = new mongoose.Schema
         description: {type: String, required: true},
         expectedDescription: {type: String, required: true},
         isAvailable: {type: Boolean, default: true},
-        media: {type: [Media], required: true},
-        review: {type: Review}
+        media: {type: [Object], required: true},
+        review: {type: Object}
     }
 );
 

@@ -6,6 +6,8 @@ import AddMediaRequest from "../Requests/AddMediaRequest";
 import RemoveMediaRequest from "../Requests/RemoveMediaRequest";
 import AddReviewRequest from "../Requests/AddReviewRequest";
 import ClotheResponse from "../Responses/ClotheResponse";
+import UpdateClotheRequest from "../Requests/UpdateClotheRequest";
+
 class ClothesController
 {
     private readonly clothesServicesApplication: IClothesServicesApplication;
@@ -25,7 +27,7 @@ class ClothesController
     public async getClotheById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {            
-            const clotheId: string = req.params.clotheId as string;        
+            const clotheId: string = req.params.id as string;        
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.getClotheById(clotheId);
             res.status(200).send(clotheResponse);
         }
@@ -37,7 +39,7 @@ class ClothesController
     public async getClothesByUserId(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const userId: string = req.query.userId as string;
+            const userId: string = req.params.id as string;
             const clothesResponse: Array<ClotheResponse> = await this.clothesServicesApplication.getClothesByUserId(userId);
             res.status(200).send(clothesResponse);
         }
@@ -62,9 +64,10 @@ class ClothesController
     public async addClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription, media }: AddClotheRequest = req.body;
+            const { userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription}: AddClotheRequest = req.body;
+            if(!req.file) throw new Error('Must contain a file');
             const addClotheRequest: AddClotheRequest = new AddClotheRequest(userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, 
-                                                        expectedDescription, media);
+                                                        expectedDescription, req.file);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addClothe(addClotheRequest);
             res.status(201).send(clotheResponse.id);
         }
@@ -88,8 +91,9 @@ class ClothesController
     public async addMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { clotheId, media }: AddMediaRequest = req.body;
-            const addMediaRequest: AddMediaRequest = new AddMediaRequest(clotheId, media);
+            const { clotheId }: AddMediaRequest = req.body;
+            if(!req.file) throw new Error('Must contain a file');
+            const addMediaRequest: AddMediaRequest = new AddMediaRequest(clotheId, req.file);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addMediaToClothe(addMediaRequest);
             res.status(200).send(clotheResponse.id);
         }
@@ -115,6 +119,7 @@ class ClothesController
         try
         {
             const { clotheId ,senderUserId, receiverUserId, puntuation, comment }: AddReviewRequest = req.body;
+            console.log(clotheId);
             const addReviewRequest = new AddReviewRequest(clotheId ,senderUserId, receiverUserId, puntuation, comment);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addReview(addReviewRequest);
             res.status(200).send(clotheResponse.id);
@@ -127,7 +132,23 @@ class ClothesController
     public async updateClotheDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            res.status(200);
+            const { clotheId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription } : UpdateClotheRequest = req.body;
+            console.log(req.body);
+            const updateClotheRequest: UpdateClotheRequest = 
+            {
+                clotheId: clotheId,
+                name: name,
+                category: category,
+                expectedCategory: expectedCategory,
+                size: size,
+                expectedSize: expectedSize,
+                gender: gender,
+                expectedGender: expectedGender,
+                description: description,
+                expectedDescription
+            }                        
+            const clotheResponse: ClotheResponse = await this.clothesServicesApplication.updateClotheDetails(updateClotheRequest);
+            res.status(200).send(clotheResponse);
         }
         catch(error)
         {

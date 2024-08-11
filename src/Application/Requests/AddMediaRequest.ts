@@ -1,8 +1,8 @@
 class AddMediaRequest
 {
     clotheId: string;
-    media: File;
-    constructor(clotheId: string, media: File)
+    media: Express.Multer.File;
+    constructor(clotheId: string, media: Express.Multer.File)
     {
         this.clotheId = clotheId;
         this.media = media;

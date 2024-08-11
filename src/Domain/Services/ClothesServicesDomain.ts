@@ -3,17 +3,21 @@ import AddMediaRequest from "../../Application/Requests/AddMediaRequest";
 import AddReviewRequest from "../../Application/Requests/AddReviewRequest";
 import GetClothesRequest from "../../Application/Requests/GetClothesRequest";
 import RemoveMediaRequest from "../../Application/Requests/RemoveMediaRequest";
+import UpdateClotheRequest from "../../Application/Requests/UpdateClotheRequest";
 import IClotheDocument from "../../Infrastructure/Interfaces/IClotheDocument";
 import IClothesCommand from "../../Infrastructure/Interfaces/IClothesCommand";
 import IClothesQuery from "../../Infrastructure/Interfaces/IClothesQuery";
+import AddClotheDTO from "../DTO/AddClotheDTO";
+import AddMediaDTO from "../DTO/AddMediaDTO";
 import AddReviewDTO from "../DTO/AddReviewDTO";
+import Media from "../Entities/Media";
 import Review from "../Entities/Review";
 import IClothesServicesDomain from "../Interfaces/IClothesServicesDomain";
 
 class ClothesServicesDomain implements IClothesServicesDomain
 {
     private readonly clothesCommand: IClothesCommand;
-    private readonly clothesQuery: IClothesQuery;
+    private readonly clothesQuery: IClothesQuery;    
     constructor(clothesCommand: IClothesCommand, clothesQuery: IClothesQuery)
     {
         this.clothesCommand = clothesCommand;
@@ -31,14 +35,25 @@ class ClothesServicesDomain implements IClothesServicesDomain
         const retrievedClothes: Array<IClotheDocument> = await this.clothesQuery.getClothes(getClothesRequest);
         return retrievedClothes;
     }
-    async addClothe(addClotheRequest: AddClotheRequest): Promise<IClotheDocument> {
-        throw new Error("Method not implemented.");
+    async addClothe(addClotheRequest: AddClotheRequest): Promise<IClotheDocument> {  
+        const fileType: string = addClotheRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
+        const mediaUri = `http://localhost:3000/uploads/${fileType}/${addClotheRequest.media.filename}`;
+        const media: Media = new Media(mediaUri, fileType);
+        const addClotheDTO: AddClotheDTO = new AddClotheDTO(addClotheRequest.userId, addClotheRequest.name, addClotheRequest.category, addClotheRequest.expectedCategory, addClotheRequest.size, addClotheRequest.expectedSize, addClotheRequest.gender, addClotheRequest.expectedGender, addClotheRequest.description, addClotheRequest.expectedDescription, media);
+        const createdClothe: IClotheDocument = await this.clothesCommand.addClothe(addClotheDTO);
+        return createdClothe;
+
     }
     async deleteClothe(clotheId: string): Promise<void> {
         await this.clothesCommand.deleteClothe(clotheId);
     }
     async addMedia(addMediaRequest: AddMediaRequest): Promise<IClotheDocument> {
-        throw new Error("Method not implemented.");
+        const fileType: string = addMediaRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
+        const mediaUri = `http://localhost:3000/uploads/${fileType}/${addMediaRequest.media.filename}`;
+        const media: Media = new Media(mediaUri, fileType);
+        const addMediaDTO: AddMediaDTO = new AddMediaDTO(addMediaRequest.clotheId, media);
+        const updatedClothe: IClotheDocument = await this.clothesCommand.addMedia(addMediaDTO);
+        return updatedClothe;
     }
     async removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument> {
         const updatedClothe: IClotheDocument = await this.clothesCommand.removeMedia(removeMediaRequest);
@@ -50,8 +65,9 @@ class ClothesServicesDomain implements IClothesServicesDomain
         const updatedClothe: IClotheDocument = await this.clothesCommand.addReview(addReviewDTO);
         return updatedClothe;
     }
-    async updateClotheDetails(): Promise<IClotheDocument> {
-        throw new Error("Method not implemented.");
-    }
+    async updateClotheDetails(updateClotheRequest: UpdateClotheRequest): Promise<IClotheDocument> {
+        const updatedClothe: IClotheDocument = await this.clothesCommand.updateClotheDetails(updateClotheRequest);
+        return updatedClothe;
+    }    
 }
 export default ClothesServicesDomain;

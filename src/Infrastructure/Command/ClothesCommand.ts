@@ -6,6 +6,7 @@ import IClothesCommand from "../Interfaces/IClothesCommand";
 import ClotheModel from "../Persistence/Models/ClotheModel";
 import RemoveMediaRequest from "../../Application/Requests/RemoveMediaRequest";
 import AddReviewDTO from "../../Domain/DTO/AddReviewDTO";
+import UpdateClotheRequest from "../../Application/Requests/UpdateClotheRequest";
 
 class ClothesCommand implements IClothesCommand
 {
@@ -39,8 +40,23 @@ class ClothesCommand implements IClothesCommand
         await retrievedClothe.save();
         return retrievedClothe;
     }
-    updateClotheDetails(): Promise<IClotheDocument> {
-        throw new Error("Method not implemented.");
+    async updateClotheDetails(updateClotheRequest: UpdateClotheRequest): Promise<IClotheDocument> {
+        const updatedClothe: IClotheDocument | null = await ClotheModel.findByIdAndUpdate(updateClotheRequest.clotheId, 
+            {
+                name: updateClotheRequest.name,
+                category: updateClotheRequest.category,
+                expectedCategory: updateClotheRequest.expectedCategory,
+                size: updateClotheRequest.size,
+                expectedSize: updateClotheRequest.expectedSize,
+                gender: updateClotheRequest.gender,
+                expectedGender: updateClotheRequest.expectedGender,
+                description: updateClotheRequest.description,
+                expectedDescription: updateClotheRequest.expectedDescription
+            },
+            { new: true }
+        );
+        if(!updatedClothe) throw new NotFoundException('No se ha encontrado una prenda');
+        return updatedClothe;
     }
 }
 export default ClothesCommand;

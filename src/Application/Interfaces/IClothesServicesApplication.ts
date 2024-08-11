@@ -1,9 +1,9 @@
-import Clothe from "../../Domain/Entities/Clothe";
 import AddClotheRequest from "../Requests/AddClotheRequest";
 import AddMediaRequest from "../Requests/AddMediaRequest";
 import AddReviewRequest from "../Requests/AddReviewRequest";
 import GetClothesRequest from "../Requests/GetClothesRequest";
 import RemoveMediaRequest from "../Requests/RemoveMediaRequest";
+import UpdateClotheRequest from "../Requests/UpdateClotheRequest";
 import ClotheResponse from "../Responses/ClotheResponse";
 
 interface IClothesServicesApplication
@@ -17,6 +17,6 @@ interface IClothesServicesApplication
     addMediaToClothe(addMediaRequest: AddMediaRequest): Promise<ClotheResponse>; 
     removeMediaFromClothe(removeMediaRequest: RemoveMediaRequest): Promise<ClotheResponse>;
     addReview(addReviewRequest: AddReviewRequest): Promise<ClotheResponse>; 
-    updateClotheDetails(): Promise<Clothe>; 
+    updateClotheDetails(updateClotheRequest: UpdateClotheRequest): Promise<ClotheResponse>; 
 }
 export default IClothesServicesApplication;
