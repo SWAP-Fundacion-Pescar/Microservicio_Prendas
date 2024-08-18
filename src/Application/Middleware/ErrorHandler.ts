@@ -3,6 +3,7 @@ import NotFoundException from "../Exceptions/NotFoundException";
 import ValidationException from "../Exceptions/ValidationException";
 import { MongooseError } from "mongoose";
 import { MongoServerError } from 'mongodb';
+import UnauthorizedException from "../Exceptions/UnauthorizedException";
 
 const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction): void => 
     {
@@ -14,6 +15,10 @@ const errorHandler = (err: Error, req: Request, res: Response, next: NextFunctio
             {
                 res.status(401).json({error: err.message});
             }       
+        if(err instanceof UnauthorizedException)
+            {
+                res.status(401).json({error: err.message});
+            }
         if(err instanceof MongooseError)
             {
                 res.status(500).json("Database Error");

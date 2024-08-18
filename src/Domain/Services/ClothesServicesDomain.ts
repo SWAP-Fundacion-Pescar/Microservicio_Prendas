@@ -1,3 +1,4 @@
+import UnauthorizedException from "../../Application/Exceptions/UnauthorizedException";
 import AddClotheRequest from "../../Application/Requests/AddClotheRequest";
 import AddMediaRequest from "../../Application/Requests/AddMediaRequest";
 import AddReviewRequest from "../../Application/Requests/AddReviewRequest";
@@ -48,6 +49,8 @@ class ClothesServicesDomain implements IClothesServicesDomain
         await this.clothesCommand.deleteClothe(clotheId);
     }
     async addMedia(addMediaRequest: AddMediaRequest): Promise<IClotheDocument> {
+        const clothe: IClotheDocument = await this.getClotheById(addMediaRequest.clotheId);
+        if(clothe.userId != addMediaRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
         const fileType: string = addMediaRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
         const mediaUri = `http://localhost:3000/uploads/${fileType}/${addMediaRequest.media.filename}`;
         const media: Media = new Media(mediaUri, fileType);
@@ -56,6 +59,8 @@ class ClothesServicesDomain implements IClothesServicesDomain
         return updatedClothe;
     }
     async removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument> {
+        const clothe: IClotheDocument = await this.getClotheById(removeMediaRequest.clotheId);
+        if(clothe.userId != removeMediaRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
         const updatedClothe: IClotheDocument = await this.clothesCommand.removeMedia(removeMediaRequest);
         return updatedClothe;
     }
@@ -66,6 +71,8 @@ class ClothesServicesDomain implements IClothesServicesDomain
         return updatedClothe;
     }
     async updateClotheDetails(updateClotheRequest: UpdateClotheRequest): Promise<IClotheDocument> {
+        const clothe: IClotheDocument = await this.getClotheById(updateClotheRequest.clotheId);
+        if(clothe.userId != updateClotheRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
         const updatedClothe: IClotheDocument = await this.clothesCommand.updateClotheDetails(updateClotheRequest);
         return updatedClothe;
     }    

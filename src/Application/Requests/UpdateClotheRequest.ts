@@ -1,5 +1,6 @@
 class UpdateClotheRequest
 {
+    userId: string;
     clotheId: string;
     name?: string;
     category?: string;
@@ -10,8 +11,9 @@ class UpdateClotheRequest
     expectedGender?: string;
     description?: string;
     expectedDescription?: string;
-    constructor(clotheId: string, name: string, category: string, expectedCategory: string, size: string, expectedSize: string, gender: string, expectedGender: string, description: string, expectedDescription: string)
+    constructor(userId: string, clotheId: string, name: string, category: string, expectedCategory: string, size: string, expectedSize: string, gender: string, expectedGender: string, description: string, expectedDescription: string)
     {
+        this.userId = userId;
         this.clotheId = clotheId;
         this.name = name;
         this.category = category;

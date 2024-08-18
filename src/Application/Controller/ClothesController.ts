@@ -8,6 +8,11 @@ import AddReviewRequest from "../Requests/AddReviewRequest";
 import ClotheResponse from "../Responses/ClotheResponse";
 import UpdateClotheRequest from "../Requests/UpdateClotheRequest";
 
+interface User
+{
+    id: string;
+}
+
 class ClothesController
 {
     private readonly clothesServicesApplication: IClothesServicesApplication;
@@ -64,9 +69,10 @@ class ClothesController
     public async addClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription}: AddClotheRequest = req.body;
+            const user = req.user as User;
+            const { name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription}: AddClotheRequest = req.body;
             if(!req.file) throw new Error('Must contain a file');
-            const addClotheRequest: AddClotheRequest = new AddClotheRequest(userId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, 
+            const addClotheRequest: AddClotheRequest = new AddClotheRequest(user.id, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, 
                                                         expectedDescription, req.file);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addClothe(addClotheRequest);
             res.status(201).send(clotheResponse.id);
@@ -91,9 +97,10 @@ class ClothesController
     public async addMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
+            const user = req.user as User;
             const { clotheId }: AddMediaRequest = req.body;
             if(!req.file) throw new Error('Must contain a file');
-            const addMediaRequest: AddMediaRequest = new AddMediaRequest(clotheId, req.file);
+            const addMediaRequest: AddMediaRequest = new AddMediaRequest(user.id , clotheId, req.file);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addMediaToClothe(addMediaRequest);
             res.status(200).send(clotheResponse.id);
         }
@@ -104,9 +111,10 @@ class ClothesController
     }
     public async removeMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
-        {
+        {   
+            const user = req.user as User;
             const { clotheId, mediaIndex }: RemoveMediaRequest = req.body;
-            const removeMediaRequest: RemoveMediaRequest = new RemoveMediaRequest(clotheId, mediaIndex);
+            const removeMediaRequest: RemoveMediaRequest = new RemoveMediaRequest(user.id, clotheId, mediaIndex);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.removeMediaFromClothe(removeMediaRequest);
             res.status(200).send(clotheResponse.id);
         }
@@ -119,7 +127,6 @@ class ClothesController
         try
         {
             const { clotheId ,senderUserId, receiverUserId, puntuation, comment }: AddReviewRequest = req.body;
-            console.log(clotheId);
             const addReviewRequest = new AddReviewRequest(clotheId ,senderUserId, receiverUserId, puntuation, comment);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addReview(addReviewRequest);
             res.status(200).send(clotheResponse.id);
@@ -132,10 +139,11 @@ class ClothesController
     public async updateClotheDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
+            const user = req.user as User;
             const { clotheId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription } : UpdateClotheRequest = req.body;
-            console.log(req.body);
             const updateClotheRequest: UpdateClotheRequest = 
             {
+                userId: user.id,
                 clotheId: clotheId,
                 name: name,
                 category: category,

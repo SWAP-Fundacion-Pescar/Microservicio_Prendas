@@ -5,7 +5,7 @@ import ClothesServicesDomain from "../../Domain/Services/ClothesServicesDomain";
 import ClothesServicesApplication from "../Services/ClothesServicesApplication";
 import ClothesController from "../Controller/ClothesController";
 import upload from "../../Infrastructure/Config/multerStorage";
-import errorHandler from "../Middleware/ErrorHandler";
+import { authenticateJwt } from "../Middleware/PassportMiddleware";
 
 
 const clothesRouter = Router();
@@ -17,13 +17,13 @@ const clothesController = new ClothesController(clothesServicesApplication);
 
 clothesRouter.get('/clothes/:id', clothesController.getClotheById);
 clothesRouter.get('/clothes', clothesController.getClothes);
-clothesRouter.get('/clothes/users/:id', clothesController.getClothesByUserId);
+clothesRouter.get('/clothes/users/:userId', clothesController.getClothesByUserId);
 
-clothesRouter.post('/clothes', upload.single('media'), clothesController.addClothe);
+clothesRouter.post('/clothes', authenticateJwt, upload.single('media'), clothesController.addClothe);
 clothesRouter.delete('/clothes/:id', clothesController.deleteClothe);
-clothesRouter.put('/clothes/addMedia', upload.single('media'),clothesController.addMedia);
-clothesRouter.put('/clothes/removeMedia', clothesController.removeMedia);
-clothesRouter.put('/clothes/review', clothesController.addReview);
-clothesRouter.put('/clothes/update', clothesController.updateClotheDetails);
+clothesRouter.put('/clothes/addMedia', authenticateJwt, upload.single('media'), clothesController.addMedia);
+clothesRouter.put('/clothes/removeMedia', authenticateJwt, clothesController.removeMedia);
+clothesRouter.put('/clothes/review', authenticateJwt, clothesController.addReview);
+clothesRouter.put('/clothes/update', authenticateJwt, clothesController.updateClotheDetails);
 
 export default clothesRouter;
