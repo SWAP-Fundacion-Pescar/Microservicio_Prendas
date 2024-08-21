@@ -44,7 +44,7 @@ class ClothesController
     public async getClothesByUserId(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const userId: string = req.params.id as string;
+            const userId: string = req.params.userId as string;
             const clothesResponse: Array<ClotheResponse> = await this.clothesServicesApplication.getClothesByUserId(userId);
             res.status(200).send(clothesResponse);
         }
@@ -56,8 +56,14 @@ class ClothesController
     public async getClothes(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
         {
-            const { offset, limit, category, size, gender }: GetClothesRequest = req.body;
-            const getClothesRequest: GetClothesRequest = new GetClothesRequest(offset, limit, category, size, gender);
+            const { offset, limit, category, size, gender } = req.query;
+            const getClothesRequest: GetClothesRequest = new GetClothesRequest(
+                offset ? parseInt(offset as string, 10) : undefined, 
+                limit ? parseInt(limit as string, 10) : undefined, 
+                category as string, 
+                size as string, 
+                gender as string
+            );
             const clothesResponse: Array<ClotheResponse> = await this.clothesServicesApplication.getClothes(getClothesRequest);            
             res.status(200).send(clothesResponse);
         }
@@ -87,7 +93,7 @@ class ClothesController
         {
             const id: string = req.params.id as string;
             await this.clothesServicesApplication.deleteClothe(id);
-            res.status(200);
+            res.status(200).send('Deleted');
         }
         catch(error)
         {

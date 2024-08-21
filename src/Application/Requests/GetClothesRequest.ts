@@ -1,11 +1,11 @@
 class GetClothesRequest
 {
-    offset: number;
-    limit: number;
-    category: string;
-    size: string;
-    gender: string;
-    constructor(offset: number, limit: number, category: string, size: string, gender: string)
+    offset?: number;
+    limit?: number;
+    category?: string;
+    size?: string;
+    gender?: string;
+    constructor(offset?: number, limit?: number, category?: string, size?: string, gender?: string)
     {
         this.offset = offset;
         this.limit = limit;
