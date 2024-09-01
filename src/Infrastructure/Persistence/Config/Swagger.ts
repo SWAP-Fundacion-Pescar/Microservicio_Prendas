@@ -1,5 +1,4 @@
 import swaggerJSDoc from "swagger-jsdoc";
-import RemoveMediaRequest from "../../../Application/Requests/RemoveMediaRequest";
 
 const swaggerDefinition = {
     openapi: '3.0.0',

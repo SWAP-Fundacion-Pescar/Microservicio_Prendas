@@ -38,7 +38,7 @@ class ClothesServicesDomain implements IClothesServicesDomain
     }
     async addClothe(addClotheRequest: AddClotheRequest): Promise<IClotheDocument> {  
         const fileType: string = addClotheRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
-        const mediaUri = `http://localhost:3000/uploads/${fileType}/${addClotheRequest.media.filename}`;
+        const mediaUri = `http://localhost:3005/uploads/${fileType}/${addClotheRequest.media.filename}`;
         const media: Media = new Media(mediaUri, fileType);
         const addClotheDTO: AddClotheDTO = new AddClotheDTO(addClotheRequest.userId, addClotheRequest.name, addClotheRequest.category, addClotheRequest.expectedCategory, addClotheRequest.size, addClotheRequest.expectedSize, addClotheRequest.gender, addClotheRequest.expectedGender, addClotheRequest.description, addClotheRequest.expectedDescription, media);
         const createdClothe: IClotheDocument = await this.clothesCommand.addClothe(addClotheDTO);
@@ -52,7 +52,7 @@ class ClothesServicesDomain implements IClothesServicesDomain
         const clothe: IClotheDocument = await this.getClotheById(addMediaRequest.clotheId);
         if(clothe.userId != addMediaRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
         const fileType: string = addMediaRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
-        const mediaUri = `http://localhost:3000/uploads/${fileType}/${addMediaRequest.media.filename}`;
+        const mediaUri = `http://localhost:3005/uploads/${fileType}/${addMediaRequest.media.filename}`;
         const media: Media = new Media(mediaUri, fileType);
         const addMediaDTO: AddMediaDTO = new AddMediaDTO(addMediaRequest.clotheId, media);
         const updatedClothe: IClotheDocument = await this.clothesCommand.addMedia(addMediaDTO);
