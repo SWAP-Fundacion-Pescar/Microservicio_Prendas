@@ -18,7 +18,9 @@ const validateAddClothe = [
     body('expectedSize').isString().notEmpty().withMessage('ExpectedSize debe de ser un string'),
     body('gender').isString().notEmpty().withMessage('Gender debe de ser un string'),
     body('expectedGender').isString().notEmpty().withMessage('ExpectedGender debe de ser un string'),
-    body('description').isString().notEmpty().withMessage('Description debe de ser un string')
+    body('description').isString().notEmpty().withMessage('Description debe de ser un string'),
+    body('color').isString().notEmpty().withMessage('color debe de ser un string'),
+    body('expectedColor').isString().notEmpty().withMessage('expectedColor debe de ser un string')
 ];
 const validateGetClothesByUserId = [
     param('userId').isString().notEmpty().withMessage('UserId debe de ser un string')
@@ -46,6 +48,8 @@ const validateUpdateClotheDetails = [
     body('expectedSize').isString().withMessage('ExpectedSize debe de ser un string'),
     body('gender').isString().withMessage('Gender debe de ser un string'),
     body('expectedGender').isString().withMessage('ExpectedGender debe de ser un string'),
-    body('description').isString().withMessage('Description debe de ser un string')
+    body('description').isString().withMessage('Description debe de ser un string'),
+    body('color').isString().notEmpty().withMessage('color debe de ser un string'),
+    body('expectedColor').isString().notEmpty().withMessage('expectedColor debe de ser un string')
 ];
 export { validateGetClotheById, validateGetClothes, validateAddClothe, validateGetClothesByUserId, validateDeleteClothe, validateAddMedia, validateAddReview, validateUpdateClotheDetails };
