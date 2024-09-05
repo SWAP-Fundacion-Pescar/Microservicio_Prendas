@@ -29,7 +29,7 @@ const swaggerDefinition = {
         schemas:{
             AddClotheRequest:{
                 type: 'object',
-                required: ['name', 'category', 'expectedCategory', 'size', 'expectedSize', 'gender', 'expectedGender', 'description', 'expectedDescription', 'media'],
+                required: ['name', 'category', 'expectedCategory', 'size', 'expectedSize', 'gender', 'expectedGender', 'description', 'color', 'expectedColor', 'media'],
                 properties:{
                     name:{
                         type: 'string',
@@ -62,10 +62,14 @@ const swaggerDefinition = {
                     description:{
                         type: 'string',
                         description: 'Clothe description'
-                    },
-                    expectedDescription:{
+                    },                    
+                    color:{
                         type: 'string',
-                        description: 'Expected clothe description'
+                        description: 'Clothe color'
+                    },
+                    expectedColor:{
+                        type: 'string',
+                        description: 'Expected color'
                     },
                     media:{                        
                         type: 'string',
@@ -134,9 +138,13 @@ const swaggerDefinition = {
                         type: 'string',
                         description: 'Clothe description'
                     },
-                    expectedDescription:{
+                    color:{
                         type: 'string',
-                        description: 'Expected clothe description'
+                        description: 'Clothe color'
+                    },
+                    expectedColor:{
+                        type: 'string',
+                        description: 'Expected color'
                     },
                     media:{                        
                         type: 'array',
@@ -268,9 +276,13 @@ const swaggerDefinition = {
                         type: 'string',
                         description: 'Clothe description'
                     },
-                    expectedDescription:{
+                    color:{
                         type: 'string',
-                        description: 'Expected clothe description'
+                        description: 'Clothe color'
+                    },
+                    expectedColor:{
+                        type: 'string',
+                        description: 'Expected color'
                     }
                 }
             },  
