@@ -90,7 +90,8 @@ class ClothesController
     }
     public async deleteClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try
-        {
+        {            
+            //TODO Verificar que el usuario sea due;o de la prenda
             const id: string = req.params.id as string;
             await this.clothesServicesApplication.deleteClothe(id);
             res.status(200).send('Deleted');

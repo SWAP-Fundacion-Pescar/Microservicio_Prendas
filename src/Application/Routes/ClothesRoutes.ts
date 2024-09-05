@@ -6,6 +6,7 @@ import ClothesServicesApplication from "../Services/ClothesServicesApplication";
 import ClothesController from "../Controller/ClothesController";
 import upload from "../../Infrastructure/Config/multerStorage";
 import { authenticateJwt } from "../Middleware/PassportMiddleware";
+import { validateAddClothe, validateAddMedia, validateAddReview, validateDeleteClothe, validateGetClotheById, validateGetClothes, validateGetClothesByUserId, validateUpdateClotheDetails } from "../Middleware/Validator/ClothesValidator";
 
 
 const clothesRouter = Router();
@@ -22,7 +23,7 @@ const clothesController = new ClothesController(clothesServicesApplication);
  *   description: Clothes management
  */
 
-clothesRouter.get('/clothes/:id', clothesController.getClotheById);
+clothesRouter.get('/clothes/:id', validateGetClotheById, clothesController.getClotheById);
 /**
  * @swagger
  * /api/clothes/{id}:
@@ -46,7 +47,7 @@ clothesRouter.get('/clothes/:id', clothesController.getClotheById);
  *             schema:
  *               $ref: '#/components/schemas/ClotheResponse'
  */
-clothesRouter.get('/clothes', clothesController.getClothes);
+clothesRouter.get('/clothes', validateGetClothes, clothesController.getClothes);
 /**
  * @swagger
  * /api/clothes/:
@@ -88,7 +89,7 @@ clothesRouter.get('/clothes', clothesController.getClothes);
  *               $ref: '#/components/schemas/ClothesResponse'
  */
 
-clothesRouter.get('/clothes/users/:userId', clothesController.getClothesByUserId);
+clothesRouter.get('/clothes/users/:userId', validateGetClothesByUserId, clothesController.getClothesByUserId);
 /**
  * @swagger
  * /api/clothes/users/{userId}:
@@ -111,7 +112,7 @@ clothesRouter.get('/clothes/users/:userId', clothesController.getClothesByUserId
  *               $ref: '#/components/schemas/ClothesResponse'
  */
 
-clothesRouter.post('/clothes', authenticateJwt, upload.single('media'), clothesController.addClothe);
+clothesRouter.post('/clothes', validateAddClothe , authenticateJwt, upload.single('media'), clothesController.addClothe);
 /**
  * @swagger
  * /api/clothes:
@@ -135,7 +136,7 @@ clothesRouter.post('/clothes', authenticateJwt, upload.single('media'), clothesC
  *               type: 'string'
  *               example: 'Clothe Id' 
  */
-clothesRouter.delete('/clothes/:id', clothesController.deleteClothe);
+clothesRouter.delete('/clothes/:id', validateDeleteClothe, authenticateJwt, clothesController.deleteClothe);
 /**
  * @swagger
  * /api/clothes/{id}:
@@ -160,7 +161,7 @@ clothesRouter.delete('/clothes/:id', clothesController.deleteClothe);
  *               type: 'string'
  *               example: 'Deleted' 
  */
-clothesRouter.put('/clothes/addMedia', authenticateJwt, upload.single('media'), clothesController.addMedia);
+clothesRouter.put('/clothes/addMedia', validateAddMedia, authenticateJwt, upload.single('media'), clothesController.addMedia);
 /**
  * @swagger
  * /api/clothes/addMedia:
@@ -208,7 +209,7 @@ clothesRouter.put('/clothes/removeMedia', authenticateJwt, clothesController.rem
  *               type: 'string'
  *               example: '12345abcdef'
  */
-clothesRouter.put('/clothes/review', authenticateJwt, clothesController.addReview);
+clothesRouter.put('/clothes/review', validateAddReview, authenticateJwt, clothesController.addReview);
 /**
  * @swagger
  * /api/clothes/review:
@@ -232,7 +233,7 @@ clothesRouter.put('/clothes/review', authenticateJwt, clothesController.addRevie
  *               type: 'string'
  *               example: '12345abcdef'
  */
-clothesRouter.put('/clothes/update', authenticateJwt, clothesController.updateClotheDetails);
+clothesRouter.put('/clothes/update', validateUpdateClotheDetails, authenticateJwt, clothesController.updateClotheDetails);
 /**
  * @swagger
  * /api/clothes/update:
