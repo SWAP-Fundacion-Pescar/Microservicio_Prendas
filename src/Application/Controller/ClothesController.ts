@@ -8,16 +8,13 @@ import AddReviewRequest from "../Requests/AddReviewRequest";
 import ClotheResponse from "../Responses/ClotheResponse";
 import UpdateClotheRequest from "../Requests/UpdateClotheRequest";
 
-interface User
-{
+interface User {
     id: string;
 }
 
-class ClothesController
-{
+class ClothesController {
     private readonly clothesServicesApplication: IClothesServicesApplication;
-    constructor(clothesServicesApplication: IClothesServicesApplication)
-    {
+    constructor(clothesServicesApplication: IClothesServicesApplication) {
         this.clothesServicesApplication = clothesServicesApplication;
         this.getClotheById = this.getClotheById.bind(this);
         this.getClothesByUserId = this.getClothesByUserId.bind(this);
@@ -30,125 +27,107 @@ class ClothesController
         this.updateClotheDetails = this.updateClotheDetails.bind(this);
     }
     public async getClotheById(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try
-        {            
-            const clotheId: string = req.params.id as string;        
+        try {
+            const clotheId: string = req.params.id as string;
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.getClotheById(clotheId);
             res.status(200).send(clotheResponse);
         }
-        catch(error)
-        {
+        catch (error) {
             next(error);
         }
     }
     public async getClothesByUserId(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try
-        {
+        try {
             const userId: string = req.params.userId as string;
             const clothesResponse: Array<ClotheResponse> = await this.clothesServicesApplication.getClothesByUserId(userId);
             res.status(200).send(clothesResponse);
         }
-        catch(error)
-        {
+        catch (error) {
             next(error);
         }
     }
     public async getClothes(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try
-        {
+        try {
             const { offset, limit, category, size, gender } = req.query;
             const getClothesRequest: GetClothesRequest = new GetClothesRequest(
-                offset ? parseInt(offset as string, 10) : undefined, 
-                limit ? parseInt(limit as string, 10) : undefined, 
-                category as string, 
-                size as string, 
+                offset ? parseInt(offset as string, 10) : undefined,
+                limit ? parseInt(limit as string, 10) : undefined,
+                category as string,
+                size as string,
                 gender as string
             );
-            const clothesResponse: Array<ClotheResponse> = await this.clothesServicesApplication.getClothes(getClothesRequest);            
+            const clothesResponse: Array<ClotheResponse> = await this.clothesServicesApplication.getClothes(getClothesRequest);
             res.status(200).send(clothesResponse);
         }
-        catch(error)
-        {
+        catch (error) {
             next(error);
         }
     }
     public async addClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try
-        {
+        try {
             const user = req.user as User;
-            const { name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription}: AddClotheRequest = req.body;
-            if(!req.file) throw new Error('Must contain a file');
-            const addClotheRequest: AddClotheRequest = new AddClotheRequest(user.id, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, 
-                                                        expectedDescription, req.file);
+            const { name, category, expectedCategory, size, expectedSize, gender, expectedGender, description }: AddClotheRequest = req.body;
+            if (!req.file) throw new Error('Must contain a file');
+            const addClotheRequest: AddClotheRequest = new AddClotheRequest(user.id, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, req.file);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addClothe(addClotheRequest);
             res.status(201).send(clotheResponse.id);
         }
-        catch(error)
-        {
+        catch (error) {
             next(error);
         }
     }
     public async deleteClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try
-        {            
+        try {
             //TODO Verificar que el usuario sea due;o de la prenda
             const id: string = req.params.id as string;
             await this.clothesServicesApplication.deleteClothe(id);
             res.status(200).send('Deleted');
         }
-        catch(error)
-        {
+        catch (error) {
             next(error);
         }
     }
     public async addMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try
-        {
+        try {
             const user = req.user as User;
             const { clotheId }: AddMediaRequest = req.body;
-            if(!req.file) throw new Error('Must contain a file');
-            const addMediaRequest: AddMediaRequest = new AddMediaRequest(user.id , clotheId, req.file);
+            if (!req.file) throw new Error('Must contain a file');
+            const addMediaRequest: AddMediaRequest = new AddMediaRequest(user.id, clotheId, req.file);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addMediaToClothe(addMediaRequest);
             res.status(200).send(clotheResponse.id);
         }
-        catch(error)
-        {
+        catch (error) {
             next(error);
         }
     }
     public async removeMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try
-        {   
+        try {
             const user = req.user as User;
             const { clotheId, mediaIndex }: RemoveMediaRequest = req.body;
             const removeMediaRequest: RemoveMediaRequest = new RemoveMediaRequest(user.id, clotheId, mediaIndex);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.removeMediaFromClothe(removeMediaRequest);
             res.status(200).send(clotheResponse.id);
         }
-        catch(error)
-        {
+        catch (error) {
             next(error);
         }
     }
     public async addReview(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try
-        {
-            const { clotheId ,senderUserId, receiverUserId, puntuation, comment }: AddReviewRequest = req.body;
-            const addReviewRequest = new AddReviewRequest(clotheId ,senderUserId, receiverUserId, puntuation, comment);
+        try {
+            const { clotheId, senderUserId, receiverUserId, puntuation, comment }: AddReviewRequest = req.body;
+            const addReviewRequest = new AddReviewRequest(clotheId, senderUserId, receiverUserId, puntuation, comment);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addReview(addReviewRequest);
             res.status(200).send(clotheResponse.id);
         }
-        catch(error)
-        {
+        catch (error) {
             next(error);
         }
     }
     public async updateClotheDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try
-        {
+        try {
             const user = req.user as User;
-            const { clotheId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, expectedDescription } : UpdateClotheRequest = req.body;
-            const updateClotheRequest: UpdateClotheRequest = 
+            const { clotheId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description }: UpdateClotheRequest = req.body;
+            const updateClotheRequest: UpdateClotheRequest =
             {
                 userId: user.id,
                 clotheId: clotheId,
@@ -160,13 +139,11 @@ class ClothesController
                 gender: gender,
                 expectedGender: expectedGender,
                 description: description,
-                expectedDescription
-            }                        
+            }
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.updateClotheDetails(updateClotheRequest);
             res.status(200).send(clotheResponse);
         }
-        catch(error)
-        {
+        catch (error) {
             next(error);
         }
     }

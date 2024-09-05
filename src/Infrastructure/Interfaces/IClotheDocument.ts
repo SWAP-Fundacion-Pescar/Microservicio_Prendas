@@ -1,6 +1,6 @@
-import { Document } from "mongoose";
-import Media from "../../Domain/Entities/Media";
+import { Document, Types } from "mongoose";
 import Review from "../../Domain/Entities/Review";
+import IMediaDocument from "./IMediaDocument";
 
 interface IClotheDocument extends Document
 {
@@ -14,8 +14,10 @@ interface IClotheDocument extends Document
     expectedGender: string;
     description: string;
     expectedDescription: string;
+    color: string;
+    expectedColor: string;
     isAvailable: boolean;
-    media: Array<Media>;
+    media: Types.DocumentArray<IMediaDocument>;
     review?: Review;
 }
 

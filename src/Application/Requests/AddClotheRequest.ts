@@ -9,10 +9,9 @@ class AddClotheRequest
     gender: string;
     expectedGender: string;
     description: string;
-    expectedDescription: string;
     media: Express.Multer.File;
     constructor(userId: string, name: string, category: string, expectedCategory: string, size: string, expectedSize: string, gender: string, expectedGender: string, 
-                description: string, expectedDescription: string, media: Express.Multer.File)
+                description: string, media: Express.Multer.File)
                 {
                     this.userId = userId;
                     this.name = name;
@@ -23,7 +22,6 @@ class AddClotheRequest
                     this.gender = gender;
                     this.expectedGender = expectedGender;
                     this.description = description;
-                    this.expectedDescription = expectedDescription;
                     this.media = media;
                 }
 }
