@@ -51,7 +51,8 @@ class ClothesCommand implements IClothesCommand
                 gender: updateClotheRequest.gender,
                 expectedGender: updateClotheRequest.expectedGender,
                 description: updateClotheRequest.description,
-                expectedDescription: updateClotheRequest.expectedDescription
+                color: updateClotheRequest.color,
+                expectedColor: updateClotheRequest.expectedColor
             },
             { new: true }
         );

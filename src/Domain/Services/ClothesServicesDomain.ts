@@ -40,7 +40,7 @@ class ClothesServicesDomain implements IClothesServicesDomain
         const fileType: string = addClotheRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
         const mediaUri = `http://localhost:3005/uploads/${fileType}/${addClotheRequest.media.filename}`;
         const media: Media = new Media(mediaUri, fileType);
-        const addClotheDTO: AddClotheDTO = new AddClotheDTO(addClotheRequest.userId, addClotheRequest.name, addClotheRequest.category, addClotheRequest.expectedCategory, addClotheRequest.size, addClotheRequest.expectedSize, addClotheRequest.gender, addClotheRequest.expectedGender, addClotheRequest.description, addClotheRequest.expectedDescription, media);
+        const addClotheDTO: AddClotheDTO = new AddClotheDTO(addClotheRequest.userId, addClotheRequest.name, addClotheRequest.category, addClotheRequest.expectedCategory, addClotheRequest.size, addClotheRequest.expectedSize, addClotheRequest.gender, addClotheRequest.expectedGender, addClotheRequest.description, addClotheRequest.color, addClotheRequest.expectedColor, media);
         const createdClothe: IClotheDocument = await this.clothesCommand.addClothe(addClotheDTO);
         return createdClothe;
 

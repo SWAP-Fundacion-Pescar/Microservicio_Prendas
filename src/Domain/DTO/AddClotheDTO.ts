@@ -11,10 +11,11 @@ class AddClotheDTO
     gender: string;
     expectedGender: string;
     description: string;
-    expectedDescription: string;
+    color: string;
+    expectedColor: string
     media: Media
     constructor(userId: string, name: string, category: string, expectedCategory: string, size: string, expectedSize: string, gender: string, expectedGender: string, 
-        description: string, expectedDescription: string, media: Media)
+        description: string, color: string, expectedColor: string, media: Media)
         {
             this.userId = userId;
             this.name = name;
@@ -25,7 +26,8 @@ class AddClotheDTO
             this.gender = gender;
             this.expectedGender = expectedGender;
             this.description = description;
-            this.expectedDescription = expectedDescription;
+            this.color = color;
+            this.expectedColor = expectedColor;
             this.media = media;
         }
 }
