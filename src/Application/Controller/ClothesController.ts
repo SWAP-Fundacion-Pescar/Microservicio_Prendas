@@ -66,9 +66,9 @@ class ClothesController {
     public async addClothe(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const user = req.user as User;
-            const { name, category, expectedCategory, size, expectedSize, gender, expectedGender, description }: AddClotheRequest = req.body;
+            const { name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, color, expectedColor }: AddClotheRequest = req.body;
             if (!req.file) throw new Error('Must contain a file');
-            const addClotheRequest: AddClotheRequest = new AddClotheRequest(user.id, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, req.file);
+            const addClotheRequest: AddClotheRequest = new AddClotheRequest(user.id, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, color, expectedColor, req.file);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addClothe(addClotheRequest);
             res.status(201).send(clotheResponse.id);
         }
@@ -126,7 +126,7 @@ class ClothesController {
     public async updateClotheDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const user = req.user as User;
-            const { clotheId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description }: UpdateClotheRequest = req.body;
+            const { clotheId, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, color, expectedColor }: UpdateClotheRequest = req.body;
             const updateClotheRequest: UpdateClotheRequest =
             {
                 userId: user.id,
@@ -139,6 +139,8 @@ class ClothesController {
                 gender: gender,
                 expectedGender: expectedGender,
                 description: description,
+                color: color,
+                expectedColor: expectedColor
             }
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.updateClotheDetails(updateClotheRequest);
             res.status(200).send(clotheResponse);

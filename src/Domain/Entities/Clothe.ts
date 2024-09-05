@@ -13,10 +13,12 @@ class Clothe
     gender: string;
     expectedGender: string;
     description: string;
+    color: string;
+    expectedColor: string;
     isAvailable: boolean;
     media: Array<Media>;
     review?: Review;
-    constructor(userId: string, name: string, category: string, expectedCategory: string, size: string, expectedSize: string, gender: string, expectedGender: string, description: string, media: Array<Media>)
+    constructor(userId: string, name: string, category: string, expectedCategory: string, size: string, expectedSize: string, gender: string, expectedGender: string, description: string, color: string, expectedColor: string, media: Array<Media>)
     {
         this.userId = userId;
         this.name = name;
@@ -27,6 +29,8 @@ class Clothe
         this.gender = gender;
         this.expectedGender = expectedGender;
         this.description = description;
+        this.color = color;
+        this.expectedColor = expectedColor;
         this.isAvailable = true;
         this.media = media;
     }

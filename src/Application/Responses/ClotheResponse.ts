@@ -13,7 +13,8 @@ class ClotheResponse
     gender: string;
     expectedGender: string;
     description: string;
-    expectedDescription: string;
+    color: string;
+    expectedColor: string;
     media: Array<Media>;
     constructor(clothe: Clothe)
     {
@@ -27,7 +28,8 @@ class ClotheResponse
         this.gender = clothe.gender;
         this.expectedGender = clothe.expectedGender;
         this.description = clothe.description;
-        this.expectedDescription = clothe.expectedDescription;
+        this.color = clothe.color;
+        this.expectedColor = clothe.expectedColor;
         this.media = clothe.media;
     }
 }
