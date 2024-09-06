@@ -28,7 +28,7 @@ class ClothesCommand implements IClothesCommand
     async removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument> {
         const retrievedClothe: IClotheDocument | null = await ClotheModel.findById(removeMediaRequest.clotheId);
         if(!retrievedClothe) throw new NotFoundException('No se ha encontrado una prenda');
-        retrievedClothe.media.splice(removeMediaRequest.mediaIndex, 1);
+        retrievedClothe.media.id(removeMediaRequest.mediaId)?.deleteOne();
         await retrievedClothe.save();
         return retrievedClothe;
     }

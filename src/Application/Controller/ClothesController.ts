@@ -103,8 +103,8 @@ class ClothesController {
     public async removeMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const user = req.user as User;
-            const { clotheId, mediaIndex }: RemoveMediaRequest = req.body;
-            const removeMediaRequest: RemoveMediaRequest = new RemoveMediaRequest(user.id, clotheId, mediaIndex);
+            const { clotheId, mediaId }: RemoveMediaRequest = req.body;
+            const removeMediaRequest: RemoveMediaRequest = new RemoveMediaRequest(user.id, clotheId, mediaId);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.removeMediaFromClothe(removeMediaRequest);
             res.status(200).send(clotheResponse.id);
         }
