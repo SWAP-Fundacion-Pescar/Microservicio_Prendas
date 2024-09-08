@@ -7,6 +7,7 @@ import ClothesController from "../Controller/ClothesController";
 import upload from "../../Infrastructure/Config/multerStorage";
 import { authenticateJwt } from "../Middleware/PassportMiddleware";
 import { validateAddClothe, validateAddMedia, validateAddReview, validateDeleteClothe, validateGetClotheById, validateGetClothes, validateGetClothesByUserId, validateUpdateClotheDetails } from "../Middleware/Validator/ClothesValidator";
+import validationErrorHandler from "../Middleware/Validator/ValidationErrorHandler";
 
 
 const clothesRouter = Router();
@@ -23,7 +24,7 @@ const clothesController = new ClothesController(clothesServicesApplication);
  *   description: Clothes management
  */
 
-clothesRouter.get('/clothes/:id', validateGetClotheById, clothesController.getClotheById);
+clothesRouter.get('/clothes/:id', validateGetClotheById, validationErrorHandler, clothesController.getClotheById);
 /**
  * @swagger
  * /api/clothes/{id}:
@@ -47,7 +48,7 @@ clothesRouter.get('/clothes/:id', validateGetClotheById, clothesController.getCl
  *             schema:
  *               $ref: '#/components/schemas/ClotheResponse'
  */
-clothesRouter.get('/clothes', validateGetClothes, clothesController.getClothes);
+clothesRouter.get('/clothes', validateGetClothes, validationErrorHandler, clothesController.getClothes);
 /**
  * @swagger
  * /api/clothes/:
@@ -89,7 +90,7 @@ clothesRouter.get('/clothes', validateGetClothes, clothesController.getClothes);
  *               $ref: '#/components/schemas/ClothesResponse'
  */
 
-clothesRouter.get('/clothes/users/:userId', validateGetClothesByUserId, clothesController.getClothesByUserId);
+clothesRouter.get('/clothes/users/:userId', validateGetClothesByUserId, validationErrorHandler, clothesController.getClothesByUserId);
 /**
  * @swagger
  * /api/clothes/users/{userId}:
@@ -112,7 +113,7 @@ clothesRouter.get('/clothes/users/:userId', validateGetClothesByUserId, clothesC
  *               $ref: '#/components/schemas/ClothesResponse'
  */
 
-clothesRouter.post('/clothes', validateAddClothe , authenticateJwt, upload.single('media'), clothesController.addClothe);
+clothesRouter.post('/clothes', validateAddClothe, validationErrorHandler, authenticateJwt, upload.single('media'), clothesController.addClothe);
 /**
  * @swagger
  * /api/clothes:
@@ -136,7 +137,7 @@ clothesRouter.post('/clothes', validateAddClothe , authenticateJwt, upload.singl
  *               type: 'string'
  *               example: 'Clothe Id' 
  */
-clothesRouter.delete('/clothes/:id', validateDeleteClothe, authenticateJwt, clothesController.deleteClothe);
+clothesRouter.delete('/clothes/:id', validateDeleteClothe, validationErrorHandler, authenticateJwt, clothesController.deleteClothe);
 /**
  * @swagger
  * /api/clothes/{id}:
@@ -161,7 +162,7 @@ clothesRouter.delete('/clothes/:id', validateDeleteClothe, authenticateJwt, clot
  *               type: 'string'
  *               example: 'Deleted' 
  */
-clothesRouter.put('/clothes/addMedia', validateAddMedia, authenticateJwt, upload.single('media'), clothesController.addMedia);
+clothesRouter.put('/clothes/addMedia', validateAddMedia, validationErrorHandler, authenticateJwt, upload.single('media'), clothesController.addMedia);
 /**
  * @swagger
  * /api/clothes/addMedia:
@@ -209,7 +210,7 @@ clothesRouter.put('/clothes/removeMedia', authenticateJwt, clothesController.rem
  *               type: 'string'
  *               example: '12345abcdef'
  */
-clothesRouter.put('/clothes/review', validateAddReview, authenticateJwt, clothesController.addReview);
+clothesRouter.put('/clothes/review', validateAddReview, validationErrorHandler, authenticateJwt, clothesController.addReview);
 /**
  * @swagger
  * /api/clothes/review:
@@ -233,7 +234,7 @@ clothesRouter.put('/clothes/review', validateAddReview, authenticateJwt, clothes
  *               type: 'string'
  *               example: '12345abcdef'
  */
-clothesRouter.put('/clothes/update', validateUpdateClotheDetails, authenticateJwt, clothesController.updateClotheDetails);
+clothesRouter.put('/clothes/update', validateUpdateClotheDetails, validationErrorHandler, authenticateJwt, clothesController.updateClotheDetails);
 /**
  * @swagger
  * /api/clothes/update:
