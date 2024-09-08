@@ -1,3 +1,4 @@
+import NotFoundException from "../../Application/Exceptions/NotFoundException";
 import UnauthorizedException from "../../Application/Exceptions/UnauthorizedException";
 import AddClotheRequest from "../../Application/Requests/AddClotheRequest";
 import AddMediaRequest from "../../Application/Requests/AddMediaRequest";
@@ -8,12 +9,15 @@ import UpdateClotheRequest from "../../Application/Requests/UpdateClotheRequest"
 import IClotheDocument from "../../Infrastructure/Interfaces/IClotheDocument";
 import IClothesCommand from "../../Infrastructure/Interfaces/IClothesCommand";
 import IClothesQuery from "../../Infrastructure/Interfaces/IClothesQuery";
+import IMediaDocument from "../../Infrastructure/Interfaces/IMediaDocument";
 import AddClotheDTO from "../DTO/AddClotheDTO";
 import AddMediaDTO from "../DTO/AddMediaDTO";
 import AddReviewDTO from "../DTO/AddReviewDTO";
 import Media from "../Entities/Media";
 import Review from "../Entities/Review";
 import IClothesServicesDomain from "../Interfaces/IClothesServicesDomain";
+import path from "path";
+import fs from 'fs';
 
 class ClothesServicesDomain implements IClothesServicesDomain
 {
@@ -61,6 +65,15 @@ class ClothesServicesDomain implements IClothesServicesDomain
     async removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument> {
         const clothe: IClotheDocument = await this.getClotheById(removeMediaRequest.clotheId);
         if(clothe.userId != removeMediaRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
+        console.log(removeMediaRequest.mediaId);
+        const media: IMediaDocument | null = clothe.media.id(removeMediaRequest.mediaId);        
+        if(!media) throw new NotFoundException('Media no existe');
+        const filename = path.basename(media.url);
+        const filePath = path.join(__dirname, '../../../../FrontEnd/public/uploads/', `${media.type}/`, filename);
+        if(fs.existsSync(filePath))
+            {
+                fs.rm(filePath, () => console.log('Archivo eliminado'));
+            }
         const updatedClothe: IClotheDocument = await this.clothesCommand.removeMedia(removeMediaRequest);
         return updatedClothe;
     }
