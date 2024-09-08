@@ -19,12 +19,10 @@ import IClothesServicesDomain from "../Interfaces/IClothesServicesDomain";
 import path from "path";
 import fs from 'fs';
 
-class ClothesServicesDomain implements IClothesServicesDomain
-{
+class ClothesServicesDomain implements IClothesServicesDomain {
     private readonly clothesCommand: IClothesCommand;
-    private readonly clothesQuery: IClothesQuery;    
-    constructor(clothesCommand: IClothesCommand, clothesQuery: IClothesQuery)
-    {
+    private readonly clothesQuery: IClothesQuery;
+    constructor(clothesCommand: IClothesCommand, clothesQuery: IClothesQuery) {
         this.clothesCommand = clothesCommand;
         this.clothesQuery = clothesQuery;
     }
@@ -40,7 +38,7 @@ class ClothesServicesDomain implements IClothesServicesDomain
         const retrievedClothes: Array<IClotheDocument> = await this.clothesQuery.getClothes(getClothesRequest);
         return retrievedClothes;
     }
-    async addClothe(addClotheRequest: AddClotheRequest): Promise<IClotheDocument> {  
+    async addClothe(addClotheRequest: AddClotheRequest): Promise<IClotheDocument> {
         const fileType: string = addClotheRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
         const mediaUri = `http://localhost:3005/uploads/${fileType}/${addClotheRequest.media.filename}`;
         const media: Media = new Media(mediaUri, fileType);
@@ -50,11 +48,15 @@ class ClothesServicesDomain implements IClothesServicesDomain
 
     }
     async deleteClothe(clotheId: string): Promise<void> {
+        const retrievedClothe: IClotheDocument = await this.getClotheById(clotheId);
+        retrievedClothe.media.forEach(media => {
+            this.removeMediaFile(media);
+        });
         await this.clothesCommand.deleteClothe(clotheId);
     }
     async addMedia(addMediaRequest: AddMediaRequest): Promise<IClotheDocument> {
         const clothe: IClotheDocument = await this.getClotheById(addMediaRequest.clotheId);
-        if(clothe.userId != addMediaRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
+        if (clothe.userId != addMediaRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
         const fileType: string = addMediaRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
         const mediaUri = `http://localhost:3005/uploads/${fileType}/${addMediaRequest.media.filename}`;
         const media: Media = new Media(mediaUri, fileType);
@@ -62,18 +64,19 @@ class ClothesServicesDomain implements IClothesServicesDomain
         const updatedClothe: IClotheDocument = await this.clothesCommand.addMedia(addMediaDTO);
         return updatedClothe;
     }
-    async removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument> {
-        const clothe: IClotheDocument = await this.getClotheById(removeMediaRequest.clotheId);
-        if(clothe.userId != removeMediaRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
-        console.log(removeMediaRequest.mediaId);
-        const media: IMediaDocument | null = clothe.media.id(removeMediaRequest.mediaId);        
-        if(!media) throw new NotFoundException('Media no existe');
+    removeMediaFile(media: IMediaDocument): void {
         const filename = path.basename(media.url);
         const filePath = path.join(__dirname, '../../../../FrontEnd/public/uploads/', `${media.type}/`, filename);
-        if(fs.existsSync(filePath))
-            {
-                fs.rm(filePath, () => console.log('Archivo eliminado'));
-            }
+        if (fs.existsSync(filePath)) {
+            fs.rm(filePath, () => console.log('Archivo eliminado'));
+        }
+    }
+    async removeMedia(removeMediaRequest: RemoveMediaRequest): Promise<IClotheDocument> {
+        const clothe: IClotheDocument = await this.getClotheById(removeMediaRequest.clotheId);
+        if (clothe.userId != removeMediaRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
+        const media: IMediaDocument | null = clothe.media.id(removeMediaRequest.mediaId);
+        if (!media) throw new NotFoundException('Media no existe');
+        this.removeMediaFile(media);
         const updatedClothe: IClotheDocument = await this.clothesCommand.removeMedia(removeMediaRequest);
         return updatedClothe;
     }
@@ -85,9 +88,9 @@ class ClothesServicesDomain implements IClothesServicesDomain
     }
     async updateClotheDetails(updateClotheRequest: UpdateClotheRequest): Promise<IClotheDocument> {
         const clothe: IClotheDocument = await this.getClotheById(updateClotheRequest.clotheId);
-        if(clothe.userId != updateClotheRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
+        if (clothe.userId != updateClotheRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
         const updatedClothe: IClotheDocument = await this.clothesCommand.updateClotheDetails(updateClotheRequest);
         return updatedClothe;
-    }    
+    }
 }
 export default ClothesServicesDomain;
