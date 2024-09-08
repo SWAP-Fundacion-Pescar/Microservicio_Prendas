@@ -223,13 +223,13 @@ const swaggerDefinition = {
             }, 
             RemoveMediaRequest:{
                 type: 'object',
-                required: ['clotheId', 'mediaIndex'],
+                required: ['clotheId', 'mediaId'],
                 properties:{                    
                     clotheId:{
                         type: 'string',
                         description: 'Clothe id'
                     },
-                    mediaIndex:{                        
+                    mediaId:{                        
                         type: 'string',
                         description: 'Media index'
                     }
