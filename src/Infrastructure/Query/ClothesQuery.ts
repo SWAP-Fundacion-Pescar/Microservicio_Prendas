@@ -18,13 +18,14 @@ class ClothesQuery implements IClothesQuery
         return retrievedClothes;
     }
     async getClothes(getClothesRequest: GetClothesRequest): Promise<Array<IClotheDocument>> {
-        const { category, size, gender }: GetClothesRequest = getClothesRequest;
+        const { category, size, gender, name }: GetClothesRequest = getClothesRequest;
         const offset = getClothesRequest.offset != null ? getClothesRequest.offset : 0;
         const limit = getClothesRequest.limit != null ? getClothesRequest.limit : 10;
         let query: Query<IClotheDocument[], IClotheDocument> = ClotheModel.find();
         if(category) query = query.where('category').equals(category); 
         if(size) query = query.where('size').equals(size);
         if(gender) query = query.where('gender').equals(gender);
+        if(name) query = query.where('name').regex(new RegExp(name, 'i'));
         query = query.where('isAvailable').equals(true);
         const retrievedClothes = await query.skip(offset).limit(limit).exec();       
         if(!retrievedClothes) throw new NotFoundException('No se han encontrado prendas');
