@@ -12,6 +12,7 @@ const app = express();
 app.use(passport.initialize());
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 app.use(requestLogger);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/swagger.json', (req, res) => {

@@ -4,23 +4,23 @@ const validateGetClotheById = [
     param('id').isString().notEmpty().withMessage('Id debe de ser un string')
 ];
 const validateGetClothes = [
-    query('offset').isNumeric().withMessage('Offset debe de ser un numero'),
-    query('limit').isNumeric().withMessage('Limit debe de ser un numero'),
-    query('category').isString().withMessage('Category debe de ser un string'),
-    query('size').isString().withMessage('Size debe de ser un string'),
-    query('gender').isString().withMessage('Gender debe de ser un string')
+    query('offset').optional().isNumeric().withMessage('Offset debe de ser un numero'),
+    query('limit').optional().isNumeric().withMessage('Limit debe de ser un numero'),
+    query('category').optional().isString().withMessage('Category debe de ser un string'),
+    query('size').optional().isString().withMessage('Size debe de ser un string'),
+    query('gender').optional().isString().withMessage('Gender debe de ser un string')
 ];
 const validateAddClothe = [
-    body('name').isString().notEmpty().withMessage('Name debe de ser un string'),
-    body('category').isString().notEmpty().withMessage('Category debe de ser un string'),
-    body('expectedCategory').isString().notEmpty().withMessage('ExpectedCategory debe de ser un string'),
-    body('size').isString().notEmpty().withMessage('Size debe de ser un string'),
-    body('expectedSize').isString().notEmpty().withMessage('ExpectedSize debe de ser un string'),
-    body('gender').isString().notEmpty().withMessage('Gender debe de ser un string'),
-    body('expectedGender').isString().notEmpty().withMessage('ExpectedGender debe de ser un string'),
-    body('description').isString().notEmpty().withMessage('Description debe de ser un string'),
-    body('color').isString().notEmpty().withMessage('color debe de ser un string'),
-    body('expectedColor').isString().notEmpty().withMessage('expectedColor debe de ser un string')
+    body('name').isString().withMessage('Name debe de ser un string'),
+    body('category').isString().withMessage('Category debe de ser un string'),
+    body('expectedCategory').isString().withMessage('ExpectedCategory debe de ser un string'),
+    body('size').isString().withMessage('Size debe de ser un string'),
+    body('expectedSize').isString().withMessage('ExpectedSize debe de ser un string'),
+    body('gender').isString().withMessage('Gender debe de ser un string'),
+    body('expectedGender').isString().withMessage('ExpectedGender debe de ser un string'),
+    body('description').isString().withMessage('Description debe de ser un string'),
+    body('color').isString().withMessage('color debe de ser un string'),
+    body('expectedColor').isString().withMessage('expectedColor debe de ser un string')
 ];
 const validateGetClothesByUserId = [
     param('userId').isString().notEmpty().withMessage('UserId debe de ser un string')
