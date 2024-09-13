@@ -113,7 +113,7 @@ clothesRouter.get('/clothes/users/:userId', validateGetClothesByUserId, validati
  *               $ref: '#/components/schemas/ClothesResponse'
  */
 
-clothesRouter.post('/clothes', validateAddClothe, validationErrorHandler, authenticateJwt, upload.single('media'), clothesController.addClothe);
+clothesRouter.post('/clothes', authenticateJwt, upload.single('media'), validateAddClothe, validationErrorHandler, clothesController.addClothe);
 /**
  * @swagger
  * /api/clothes:
@@ -137,7 +137,7 @@ clothesRouter.post('/clothes', validateAddClothe, validationErrorHandler, authen
  *               type: 'string'
  *               example: 'Clothe Id' 
  */
-clothesRouter.delete('/clothes/:id', validateDeleteClothe, validationErrorHandler, authenticateJwt, clothesController.deleteClothe);
+clothesRouter.delete('/clothes/:id', authenticateJwt, validateDeleteClothe, validationErrorHandler, clothesController.deleteClothe);
 /**
  * @swagger
  * /api/clothes/{id}:
@@ -162,7 +162,7 @@ clothesRouter.delete('/clothes/:id', validateDeleteClothe, validationErrorHandle
  *               type: 'string'
  *               example: 'Deleted' 
  */
-clothesRouter.put('/clothes/addMedia', validateAddMedia, validationErrorHandler, authenticateJwt, upload.single('media'), clothesController.addMedia);
+clothesRouter.put('/clothes/addMedia', authenticateJwt, upload.single('media'), validateAddMedia, validationErrorHandler, clothesController.addMedia);
 /**
  * @swagger
  * /api/clothes/addMedia:
@@ -210,7 +210,7 @@ clothesRouter.put('/clothes/removeMedia', authenticateJwt, clothesController.rem
  *               type: 'string'
  *               example: '12345abcdef'
  */
-clothesRouter.put('/clothes/review', validateAddReview, validationErrorHandler, authenticateJwt, clothesController.addReview);
+clothesRouter.put('/clothes/review', authenticateJwt, validateAddReview, validationErrorHandler, clothesController.addReview);
 /**
  * @swagger
  * /api/clothes/review:
@@ -234,7 +234,7 @@ clothesRouter.put('/clothes/review', validateAddReview, validationErrorHandler, 
  *               type: 'string'
  *               example: '12345abcdef'
  */
-clothesRouter.put('/clothes/update', validateUpdateClotheDetails, validationErrorHandler, authenticateJwt, clothesController.updateClotheDetails);
+clothesRouter.put('/clothes/update', authenticateJwt, validateUpdateClotheDetails, validationErrorHandler, clothesController.updateClotheDetails);
 /**
  * @swagger
  * /api/clothes/update:
