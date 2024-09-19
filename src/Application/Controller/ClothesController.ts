@@ -7,11 +7,18 @@ import RemoveMediaRequest from "../Requests/RemoveMediaRequest";
 import AddReviewRequest from "../Requests/AddReviewRequest";
 import ClotheResponse from "../Responses/ClotheResponse";
 import UpdateClotheRequest from "../Requests/UpdateClotheRequest";
+import { v2 as cloudinary } from 'cloudinary';
+import streamifier from 'streamifier'
 
 interface User {
     id: string;
 }
-
+// Cloudinary configuration
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+    api_key: process.env.CLOUDINARY_API_KEY!,
+    api_secret: process.env.CLOUDINARY_API_SECRET!,
+});
 class ClothesController {
     private readonly clothesServicesApplication: IClothesServicesApplication;
     constructor(clothesServicesApplication: IClothesServicesApplication) {
@@ -21,7 +28,7 @@ class ClothesController {
         this.getClothes = this.getClothes.bind(this);
         this.addClothe = this.addClothe.bind(this);
         this.deleteClothe = this.deleteClothe.bind(this);
-        this.addMedia = this.addMedia.bind(this);
+        // this.addMedia = this.addMedia.bind(this);
         this.removeMedia = this.removeMedia.bind(this);
         this.addReview = this.addReview.bind(this);
         this.updateClotheDetails = this.updateClotheDetails.bind(this);
@@ -48,13 +55,14 @@ class ClothesController {
     }
     public async getClothes(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { offset, limit, category, size, gender } = req.query;
+            const { offset, limit, category, size, gender, name } = req.query;
             const getClothesRequest: GetClothesRequest = new GetClothesRequest(
                 offset ? parseInt(offset as string, 10) : undefined,
                 limit ? parseInt(limit as string, 10) : undefined,
                 category as string,
                 size as string,
-                gender as string
+                gender as string,
+                name as string
             );
             const clothesResponse: Array<ClotheResponse> = await this.clothesServicesApplication.getClothes(getClothesRequest);
             res.status(200).send(clothesResponse);
@@ -67,8 +75,23 @@ class ClothesController {
         try {
             const user = req.user as User;
             const { name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, color, expectedColor }: AddClotheRequest = req.body;
-            if (!req.file) throw new Error('Must contain a file');
-            const addClotheRequest: AddClotheRequest = new AddClotheRequest(user.id, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, color, expectedColor, req.file);
+            const result = await new Promise((resolve, reject) => {
+                if (!req.file) throw new Error("File not found")
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    { folder: 'test' },  // Cloudinary folder
+                    (error, result) => {
+                        if (error) return reject(error);
+                        resolve(result);
+                    }
+                );
+
+                // Stream the file's buffer to Cloudinary
+                streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
+            });
+
+            // Respond with the secure URL of the uploaded file
+            const url = (result as any).secure_url;            
+            const addClotheRequest: AddClotheRequest = new AddClotheRequest(user.id, name, category, expectedCategory, size, expectedSize, gender, expectedGender, description, color, expectedColor, url);
             const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addClothe(addClotheRequest);
             res.status(201).send(clotheResponse.id);
         }
@@ -87,19 +110,19 @@ class ClothesController {
             next(error);
         }
     }
-    public async addMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const user = req.user as User;
-            const { clotheId }: AddMediaRequest = req.body;
-            if (!req.file) throw new Error('Must contain a file');
-            const addMediaRequest: AddMediaRequest = new AddMediaRequest(user.id, clotheId, req.file);
-            const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addMediaToClothe(addMediaRequest);
-            res.status(200).send(clotheResponse.id);
-        }
-        catch (error) {
-            next(error);
-        }
-    }
+    // public async addMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
+    //     try {
+    //         const user = req.user as User;
+    //         const { clotheId }: AddMediaRequest = req.body;
+    //         if (!req.file) throw new Error('Must contain a file');
+    //         const addMediaRequest: AddMediaRequest = new AddMediaRequest(user.id, clotheId, req.file);
+    //         const clotheResponse: ClotheResponse = await this.clothesServicesApplication.addMediaToClothe(addMediaRequest);
+    //         res.status(200).send(clotheResponse.id);
+    //     }
+    //     catch (error) {
+    //         next(error);
+    //     }
+    // }
     public async removeMedia(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const user = req.user as User;

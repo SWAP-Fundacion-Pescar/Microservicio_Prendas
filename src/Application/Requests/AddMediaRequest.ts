@@ -2,12 +2,12 @@ class AddMediaRequest
 {
     userId: string;
     clotheId: string;
-    media: Express.Multer.File;
-    constructor(userId:string ,clotheId: string, media: Express.Multer.File)
+    mediaUrl: string;
+    constructor(userId:string ,clotheId: string, mediaUrl: string)
     {
         this.userId = userId;
         this.clotheId = clotheId;
-        this.media = media;
+        this.mediaUrl = mediaUrl;
     }
 }
 export default AddMediaRequest;

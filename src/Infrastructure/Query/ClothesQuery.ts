@@ -20,7 +20,7 @@ class ClothesQuery implements IClothesQuery
     async getClothes(getClothesRequest: GetClothesRequest): Promise<Array<IClotheDocument>> {
         const { category, size, gender, name }: GetClothesRequest = getClothesRequest;
         const offset = getClothesRequest.offset != null ? getClothesRequest.offset : 0;
-        const limit = getClothesRequest.limit != null ? getClothesRequest.limit : 10;
+        const limit = getClothesRequest.limit != null ? getClothesRequest.limit : 12;
         let query: Query<IClotheDocument[], IClotheDocument> = ClotheModel.find();
         if(category) query = query.where('category').equals(category); 
         if(size) query = query.where('size').equals(size);

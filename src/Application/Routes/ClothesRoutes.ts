@@ -162,7 +162,7 @@ clothesRouter.delete('/clothes/:id', authenticateJwt, validateDeleteClothe, vali
  *               type: 'string'
  *               example: 'Deleted' 
  */
-clothesRouter.put('/clothes/addMedia', authenticateJwt, upload.single('media'), validateAddMedia, validationErrorHandler, clothesController.addMedia);
+// clothesRouter.put('/clothes/addMedia', authenticateJwt, upload.single('media'), validateAddMedia, validationErrorHandler, clothesController.addMedia);
 /**
  * @swagger
  * /api/clothes/addMedia:

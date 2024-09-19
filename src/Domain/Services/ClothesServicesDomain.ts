@@ -39,9 +39,9 @@ class ClothesServicesDomain implements IClothesServicesDomain {
         return retrievedClothes;
     }
     async addClothe(addClotheRequest: AddClotheRequest): Promise<IClotheDocument> {
-        const fileType: string = addClotheRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
-        const mediaUri = `http://localhost:3005/uploads/${fileType}/${addClotheRequest.media.filename}`;
-        const media: Media = new Media(mediaUri, fileType);
+        // const fileType: string = addClotheRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
+        // const mediaUri = `http://localhost:3005/uploads/${fileType}/${addClotheRequest.media.filename}`;
+        const media: Media = new Media(addClotheRequest.mediaUrl, 'image');
         const addClotheDTO: AddClotheDTO = new AddClotheDTO(addClotheRequest.userId, addClotheRequest.name, addClotheRequest.category, addClotheRequest.expectedCategory, addClotheRequest.size, addClotheRequest.expectedSize, addClotheRequest.gender, addClotheRequest.expectedGender, addClotheRequest.description, addClotheRequest.color, addClotheRequest.expectedColor, media);
         const createdClothe: IClotheDocument = await this.clothesCommand.addClothe(addClotheDTO);
         return createdClothe;
@@ -57,9 +57,7 @@ class ClothesServicesDomain implements IClothesServicesDomain {
     async addMedia(addMediaRequest: AddMediaRequest): Promise<IClotheDocument> {
         const clothe: IClotheDocument = await this.getClotheById(addMediaRequest.clotheId);
         if (clothe.userId != addMediaRequest.userId) throw new UnauthorizedException('Usuario no autorizado');
-        const fileType: string = addMediaRequest.media.mimetype.startsWith('image/') ? 'images' : 'videos';
-        const mediaUri = `http://localhost:3005/uploads/${fileType}/${addMediaRequest.media.filename}`;
-        const media: Media = new Media(mediaUri, fileType);
+        const media: Media = new Media(addMediaRequest.mediaUrl, 'image');
         const addMediaDTO: AddMediaDTO = new AddMediaDTO(addMediaRequest.clotheId, media);
         const updatedClothe: IClotheDocument = await this.clothesCommand.addMedia(addMediaDTO);
         return updatedClothe;

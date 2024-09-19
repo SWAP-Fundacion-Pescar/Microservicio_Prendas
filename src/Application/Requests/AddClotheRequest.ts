@@ -11,9 +11,9 @@ class AddClotheRequest
     description: string;
     color: string;
     expectedColor: string;
-    media: Express.Multer.File;
+    mediaUrl: string;
     constructor(userId: string, name: string, category: string, expectedCategory: string, size: string, expectedSize: string, gender: string, expectedGender: string, 
-                description: string, color: string, expectedColor: string, media: Express.Multer.File)
+                description: string, color: string, expectedColor: string, mediaUrl: string)
                 {
                     this.userId = userId;
                     this.name = name;
@@ -26,7 +26,7 @@ class AddClotheRequest
                     this.description = description;
                     this.color = color;
                     this.expectedColor = expectedColor;
-                    this.media = media;
+                    this.mediaUrl = mediaUrl;
                 }
 }
 export default AddClotheRequest;
